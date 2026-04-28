@@ -1,0 +1,967 @@
+import json
+import subprocess
+
+# Fetch repos
+print("Fetching repos...")
+result = subprocess.run(['gh', 'repo', 'list', 'TIAO-Eliasse', '--limit', '100', '--json', 'name,description,url,primaryLanguage,stargazerCount,updatedAt,repositoryTopics'], capture_output=True, text=True)
+repos = json.loads(result.stdout)
+
+cards_html = ""
+for repo in repos:
+    name = repo['name']
+    if name == 'nlp_project':
+        continue # Featured card handled statically
+        
+    desc = repo.get('description') or ''
+    lang = repo.get('primaryLanguage')
+    lang_name = lang['name'] if lang else 'Unknown'
+    topics = repo.get('repositoryTopics') or []
+    
+    topic_tags = "".join([f'<span class="tag">[{t.get("name", "topic")}]</span>' for t in topics]) if topics else ""
+    if not topic_tags and lang_name != 'Unknown':
+        topic_tags = f'<span class="tag">[{lang_name}]</span>'
+        
+    summary = f"Repository containing code and resources for {name.replace('_', ' ').replace('-', ' ')}."
+    if desc:
+        summary = desc
+    summary += f" Implemented primarily using {lang_name}."
+
+    cards_html += f"""
+        <div class="project-card reveal tilt" data-repo="{name}">
+          <div class="card-header">
+            <span class="repo-lang">● {lang_name}</span>
+            <span class="repo-stars">⭐ {repo.get('stargazerCount', 0)}</span>
+            <span class="repo-updated">Updated recently</span>
+          </div>
+          <h3 class="card-title">{name.replace('_', ' ').replace('-', ' ').title()}</h3>
+          <p class="card-subtitle" style="opacity:0.7; font-size:0.85rem; margin-bottom:10px;">{desc}</p>
+          <p class="card-desc" style="font-size:0.9rem;">{summary}</p>
+          <div class="card-topics">
+            {topic_tags}
+          </div>
+          <a class="repo-link card-btn" href="{repo.get('url')}" target="_blank" rel="noopener noreferrer">
+            View on GitHub ↗ &nbsp;<small>github.com/TIAO-Eliasse/{name}</small>
+          </a>
+        </div>"""
+
+html_content = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eliasse TIAO — AI Researcher · Google DeepMind Scholar · AIMS</title>
+    <meta name="description" content="Eliasse TIAO — M.Sc. AI at AIMS Stellenbosch, Google DeepMind Scholar. Research in XAI, NLP, Probabilistic Forecasting. SemEval-2026 author. Cape Town, South Africa.">
+    <meta name="keywords" content="Eliasse TIAO, AI researcher Africa, Google DeepMind scholar AIMS, XAI explainable AI, NLP researcher, machine learning Cameroon, Burkina Faso AI, SemEval 2026, AIMS South Africa">
+    <meta property="og:title" content="Eliasse TIAO — AI Researcher">
+    <meta property="og:description" content="Google DeepMind Scholar · M.Sc. AI · AIMS Stellenbosch · XAI · NLP · Probabilistic Forecasting">
+    <meta property="og:type" content="website">
+    <meta name="author" content="Eliasse TIAO">
+    <meta name="robots" content="index, follow">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=JetBrains+Mono:wght@400&family=Space+Grotesk:wght@400;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {{
+            --bg-black: #080810;
+            --text-white: #ffffff;
+            --accent-blue: #4f8ef7;
+            --accent-teal: #00d4aa;
+            --accent-gold: #f5c842;
+            --surface: rgba(255,255,255,0.04);
+            --surface-border: rgba(255,255,255,0.1);
+            --gradient: linear-gradient(135deg, #4f8ef7, #00d4aa);
+            --font-display: 'Space Grotesk', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --font-code: 'JetBrains Mono', monospace;
+        }}
+
+        * {{ margin: 0; padding: 0; box-sizing: border-box; cursor: none; }}
+        html {{ scroll-behavior: smooth; }}
+        body {{
+            background-color: var(--bg-black);
+            color: var(--text-white);
+            font-family: var(--font-body);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }}
+
+        /* Effects */
+        #cursor-dot {{
+            position: fixed; width: 8px; height: 8px; background: var(--accent-blue);
+            border-radius: 50%; pointer-events: none; z-index: 10000;
+            transform: translate(-50%, -50%); transition: width 0.2s, height 0.2s, background-color 0.2s;
+        }}
+        #cursor-glow {{
+            position: fixed; width: 200px; height: 200px;
+            background: radial-gradient(circle, rgba(79, 142, 247, 0.15) 0%, transparent 70%);
+            pointer-events: none; z-index: 9999; transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s;
+        }}
+        @media (pointer: coarse) {{
+            #cursor-dot, #cursor-glow {{ display: none; }}
+            * {{ cursor: auto; }}
+        }}
+
+        .glitch-hover:hover::before, .glitch-hover:hover::after {{
+            content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg-black);
+        }}
+        .glitch-hover:hover::before {{
+            left: 2px; text-shadow: -2px 0 #ff0066; clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+            animation: glitch-anim 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+        }}
+        .glitch-hover:hover::after {{
+            left: -2px; text-shadow: -2px 0 #00ffff; clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+            animation: glitch-anim 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) both reverse;
+        }}
+        @keyframes glitch-anim {{
+            0% {{ transform: translate(0); }}
+            20% {{ transform: translate(-3px, 3px); }}
+            40% {{ transform: translate(-3px, -3px); }}
+            60% {{ transform: translate(3px, 3px); }}
+            80% {{ transform: translate(3px, -3px); }}
+            100% {{ transform: translate(0); }}
+        }}
+
+        .reveal {{ opacity: 0; transform: translateY(50px) scale(0.98); transition: 0.8s cubic-bezier(0.16, 1, 0.3, 1); }}
+        .reveal.visible {{ opacity: 1; transform: translateY(0) scale(1); }}
+
+        /* Layout & Components */
+        .container {{ max-width: 1200px; margin: 0 auto; padding: 120px 40px; }}
+        
+        .btn-magnetic {{ display: inline-block; transition: 0.5s cubic-bezier(0.23,1,0.32,1); }}
+        .btn {{
+            font-family: var(--font-display); font-weight: 700; padding: 14px 28px;
+            border-radius: 4px; text-decoration: none; display: inline-flex; align-items: center; gap: 10px;
+        }}
+        .btn-primary {{ background: var(--accent-blue); color: white; }}
+        .btn-outline {{ border: 1px solid var(--accent-teal); color: var(--accent-teal); }}
+        .btn-white {{ border: 1px solid white; color: white; }}
+        .btn-text {{ color: white; text-decoration: underline; }}
+
+        .section-label {{ font-family: var(--font-code); color: var(--accent-teal); font-size: 0.85rem; letter-spacing: 0.1em; margin-bottom: 20px; display: block; }}
+        h2 {{ font-family: var(--font-display); font-size: 3rem; font-weight: 700; margin-bottom: 60px; position: relative; }}
+        h2::after {{ content: ''; position: absolute; bottom: -20px; left: 0; width: 60px; height: 4px; background: var(--gradient); }}
+
+        /* Navbar */
+        nav {{
+            position: fixed; top: 0; width: 100%; padding: 30px 40px; z-index: 1000;
+            transition: all 0.4s; display: flex; justify-content: space-between; align-items: center;
+        }}
+        nav.scrolled {{
+            padding: 15px 40px; background: rgba(8,8,16,0.75); backdrop-filter: blur(24px) saturate(180%);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }}
+        .nav-links {{ display: flex; gap: 30px; }}
+        .nav-links a {{ color: white; text-decoration: none; font-size: 0.9rem; padding-left: 10px; border-left: 2px solid transparent; opacity: 0.6; transition: 0.3s; }}
+        .nav-links a:hover, .nav-links a.active {{ opacity: 1; border-left-color: var(--accent-teal); }}
+
+        /* Hero */
+        #hero {{ height: 100vh; position: relative; display: flex; flex-direction: column; justify-content: center; padding-top: 0; padding-bottom: 0; }}
+        #neural-canvas {{ position: absolute; inset: 0; z-index: 0; }}
+        .hero-content {{ position: relative; z-index: 10; }}
+        .top-bar {{ position: absolute; top: 100px; width: calc(100% - 80px); display: flex; justify-content: space-between; font-family: var(--font-code); font-size: 0.8rem; opacity: 0.8; }}
+        .pulse-green {{ display: inline-block; width: 8px; height: 8px; background: #00d4aa; border-radius: 50%; box-shadow: 0 0 10px #00d4aa; animation: pulse 2s infinite; }}
+        @keyframes pulse {{ 0% {{ opacity: 1; }} 50% {{ opacity: 0.4; }} 100% {{ opacity: 1; }} }}
+        
+        .hero-name {{ font-family: var(--font-display); font-size: clamp(3.5rem, 9vw, 8.5rem); font-weight: 800; letter-spacing: -0.04em; line-height: 0.9; margin: 20px 0; position: relative; display: inline-block; }}
+        .hero-subtitle {{ font-family: var(--font-code); font-size: 1.2rem; color: var(--accent-teal); margin-bottom: 20px; }}
+        .hero-bio {{ font-size: 1.1rem; max-width: 600px; opacity: 0.6; margin-bottom: 40px; }}
+        .social-row a {{ display: inline-flex; align-items: center; gap: 8px; color: white; text-decoration: none; font-size: 0.9rem; opacity: 0.7; transition: 0.3s; margin-right: 20px; position: relative; }}
+        .social-row a::after {{ content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 1px; background: white; transition: 0.3s; }}
+        .social-row a:hover::after {{ width: 100%; }}
+        .social-row a:hover {{ opacity: 1; }}
+
+        /* Projects */
+        .project-grid {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 30px; }}
+        .project-card {{
+            background: var(--surface); border: 1px solid var(--surface-border);
+            padding: 30px; border-radius: 12px; transition: 0.6s ease; transform-style: preserve-3d;
+        }}
+        .project-card.featured {{ grid-column: 1 / -1; border-color: rgba(245, 200, 66, 0.4); box-shadow: 0 0 40px rgba(245, 200, 66, 0.1); }}
+        .card-header {{ display: flex; justify-content: space-between; font-family: var(--font-code); font-size: 0.75rem; margin-bottom: 20px; opacity: 0.7; }}
+        .card-title {{ font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 10px; }}
+        .card-topics {{ display: flex; flex-wrap: wrap; gap: 8px; margin: 20px 0; }}
+        .tag {{ font-family: var(--font-code); font-size: 0.7rem; padding: 4px 8px; background: rgba(255,255,255,0.05); border-radius: 4px; color: var(--accent-blue); }}
+        .card-btn {{ display: inline-block; font-family: var(--font-code); font-size: 0.8rem; color: white; text-decoration: none; border-bottom: 1px solid var(--surface-border); padding-bottom: 2px; }}
+        
+        .terminal-hover {{ position: absolute; bottom: 0; left: 0; width: 100%; background: #080810; padding: 20px; font-family: var(--font-code); color: var(--accent-teal); font-size: 0.8rem; transform: translateY(100%); transition: 0.4s; border-top: 1px solid var(--accent-teal); }}
+        .project-card.featured:hover .terminal-hover {{ transform: translateY(0); }}
+
+        /* Skills */
+        .tab-btn {{ background: none; border: none; color: white; opacity: 0.5; font-family: var(--font-display); font-size: 1.2rem; cursor: none; padding-bottom: 10px; border-bottom: 2px solid transparent; margin-right: 30px; }}
+        .tab-btn.active {{ opacity: 1; border-color: var(--accent-blue); }}
+        .tab-content {{ display: none; padding-top: 40px; }}
+        .tab-content.active {{ display: block; }}
+        .ring-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 40px; text-align: center; }}
+        .ring-container {{ position: relative; width: 120px; height: 120px; margin: 0 auto 15px; }}
+        .ring-svg {{ transform: rotate(-90deg); width: 100%; height: 100%; }}
+        .ring-bg {{ fill: none; stroke: rgba(255,255,255,0.05); stroke-width: 6; }}
+        .ring-fill {{ fill: none; stroke: url(#gradient); stroke-width: 6; stroke-linecap: round; stroke-dasharray: 100; stroke-dashoffset: 100; }}
+        .ring-text {{ position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; }}
+
+        /* Experience */
+        .timeline {{ position: relative; border-left: 2px solid var(--surface-border); padding-left: 40px; margin-left: 20px; }}
+        .timeline-item {{ position: relative; margin-bottom: 60px; }}
+        .timeline-item::before {{ content: ''; position: absolute; left: -49px; top: 0; width: 16px; height: 16px; background: var(--bg-black); border: 2px solid var(--accent-blue); border-radius: 50%; }}
+        .timeline-item.gold::before {{ border-color: var(--accent-gold); }}
+
+        /* Loading */
+        #loader {{ position: fixed; inset: 0; background: var(--bg-black); z-index: 100000; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.5s; }}
+        #loader-text {{ font-family: var(--font-display); font-size: 3rem; font-weight: 800; letter-spacing: 5px; }}
+        #loader-bar {{ width: 200px; height: 2px; background: rgba(255,255,255,0.1); margin-top: 20px; position: relative; overflow: hidden; }}
+        #loader-progress {{ position: absolute; top: 0; left: 0; height: 100%; width: 0; background: var(--accent-teal); transition: width 1.5s ease-out; }}
+    </style>
+    
+    <script type="application/ld+json">
+    {{
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Eliasse TIAO",
+      "jobTitle": "AI Researcher · Google DeepMind Scholar",
+      "affiliation": {{"@type": "Organization", "name": "AIMS / Stellenbosch University"}},
+      "email": "eliasse@aims.ac.za",
+      "url": "https://github.com/TIAO-Eliasse",
+      "sameAs": [
+        "https://github.com/TIAO-Eliasse",
+        "https://linkedin.com/in/eliasse-tiao"
+      ],
+      "knowsAbout": ["Explainable AI","NLP","Machine Learning","Probabilistic Forecasting","Statistics","Causal Inference"]
+    }}
+    </script>
+</head>
+<body>
+
+    <!-- Loading Screen -->
+    <div id="loader">
+        <div id="loader-text">ET</div>
+        <div id="loader-bar"><div id="loader-progress"></div></div>
+    </div>
+
+    <!-- Cursors -->
+    <div id="cursor-glow"></div>
+    <div id="cursor-dot"></div>
+
+    <!-- Navbar -->
+    <nav id="navbar">
+        <a href="#top" class="nav-logo" style="font-family: var(--font-display); font-weight: 800; text-decoration: none; color: white;">ET</a>
+        <div class="nav-links">
+            <a href="#about">About</a>
+            <a href="#research">Research</a>
+            <a href="#projects">Projects</a>
+            <a href="#skills">Skills</a>
+            <a href="#experience">Experience</a>
+            <a href="#honors">Honors</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section id="top" class="container" style="padding-top: 0; padding-bottom: 0;">
+        <canvas id="neural-canvas"></canvas>
+        <div class="top-bar">
+            <div><span class="pulse-green"></span> Open to Research Opportunities</div>
+            <div id="live-clock">Cape Town, ZA · GMT+2</div>
+        </div>
+        <div class="hero-content">
+            <div style="font-family: var(--font-code); color: var(--accent-teal); font-size: 13px; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 20px;">
+                Google DeepMind Scholar · AIMS South Africa · 2026
+            </div>
+            <h1 class="hero-name glitch-hover" data-text="ELIASSE TIAO" id="hero-name-anim"></h1>
+            <div class="hero-subtitle">
+                <span style="color: var(--accent-teal);">|</span> <span id="typewriter"></span>
+            </div>
+            <p class="hero-bio">Building trustworthy AI systems for high-stakes decisions.</p>
+            
+            <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 40px;">
+                <div class="btn-magnetic"><a href="#research" class="btn btn-primary btn-inner">View Research ↗</a></div>
+                <div class="btn-magnetic"><a href="#projects" class="btn btn-outline btn-inner">GitHub Projects</a></div>
+                <div class="btn-magnetic"><a href="Eliasse_TIAO_CV.pdf" download class="btn btn-white btn-inner">Download CV ↓</a></div>
+                <div class="btn-magnetic"><a href="#contact" class="btn btn-text btn-inner">Contact Me →</a></div>
+            </div>
+
+            <div class="social-row">
+                <a href="https://github.com/TIAO-Eliasse" target="_blank">github.com/TIAO-Eliasse</a>
+                <a href="https://linkedin.com/in/eliasse-tiao" target="_blank">linkedin.com/in/eliasse-tiao</a>
+                <a href="mailto:eliasse@aims.ac.za">eliasse@aims.ac.za</a>
+            </div>
+
+            <div style="margin-top: 30px; font-family: var(--font-code); font-size: 0.8rem; color: var(--accent-gold);">
+                ⚡ <span data-github-total>Loading GitHub Stats...</span>
+            </div>
+        </div>
+        <div style="position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); text-align: center; font-family: var(--font-code); font-size: 0.7rem; opacity: 0.5;">
+            scroll to explore <br><br> ↓
+        </div>
+    </section>
+
+    <!-- About -->
+    <section id="about" class="container">
+        <span class="section-label">01 / ABOUT</span>
+        <h2>Bridging AI Research & Real-World Impact</h2>
+        
+        <div style="display: grid; grid-template-columns: 58% 42%; gap: 60px;">
+            <div class="reveal" style="font-size: 1.1rem; opacity: 0.8; font-weight: 300;">
+                <p>I am an M.Sc. student in Artificial Intelligence at AIMS (Stellenbosch University), proudly funded by the <b>Google DeepMind Scholarship</b> — one of Africa's most competitive AI fellowships. Trained as a Statistician and Economic Engineer at ISSEA-CEMAC in Cameroon, my research bridges rigorous quantitative methods with cutting-edge machine learning.</p><br>
+                <p>My work focuses on three interconnected themes: <b>Explainable AI (XAI)</b> for decision support, <b>Natural Language Processing</b> for multilingual low-resource settings, and <b>Probabilistic Forecasting</b> with interpretable uncertainty. I am co-author of a Camera-Ready paper accepted at SemEval-2026 (ACL Anthology) on fine-grained polarization detection using transformer LLMs.</p><br>
+                <p>Originally from Burkina Faso, educated across West and Central Africa, now conducting frontier AI research in Cape Town — my journey reflects resilience, excellence, and a commitment to making AI work for the African continent and the world.</p>
+                <div style="margin-top: 30px; display: flex; flex-wrap: wrap; gap: 10px;">
+                    <span class="tag">🔬 Research Internships</span> <span class="tag">🎓 PhD Positions</span> <span class="tag">🤝 Collaborations</span> <span class="tag">📊 Consulting</span>
+                </div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div class="project-card reveal" style="border-color: rgba(245, 200, 66, 0.5); text-align: center;">
+                    <div class="stat-num" data-val="1" style="font-family: var(--font-display); font-size: 3rem; font-weight: 800; color: var(--accent-gold);">0</div>
+                    <div style="font-weight: 700;">Camera-Ready</div><div style="font-size: 0.8rem; opacity: 0.6;">ACL Anthology</div>
+                </div>
+                <div class="project-card reveal" style="border-color: rgba(79, 142, 247, 0.5); text-align: center;">
+                    <div class="stat-num" data-val="6" style="font-family: var(--font-display); font-size: 3rem; font-weight: 800; color: var(--accent-blue);">0</div>
+                    <div style="font-weight: 700;">Ranked 6th</div><div style="font-size: 0.8rem; opacity: 0.6;">SemEval-2026</div>
+                </div>
+                <div class="project-card reveal" style="border-color: rgba(0, 212, 170, 0.5); text-align: center;">
+                    <div class="stat-num" data-val="7" data-suffix="+" style="font-family: var(--font-display); font-size: 3rem; font-weight: 800; color: var(--accent-teal);">0</div>
+                    <div style="font-weight: 700;">ML Projects</div><div style="font-size: 0.8rem; opacity: 0.6;">Deployed</div>
+                </div>
+                <div class="project-card reveal" style="background: var(--gradient); padding: 2px;">
+                    <div style="background: var(--bg-black); width: 100%; height: 100%; border-radius: 10px; padding: 30px; text-align: center;">
+                        <div class="stat-num" data-val="100" data-suffix="%" style="font-family: var(--font-display); font-size: 3rem; font-weight: 800; color: white;">0</div>
+                        <div style="font-weight: 700;">DeepMind Funded</div><div style="font-size: 0.8rem; opacity: 0.6;">Full Scholarship</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Research -->
+    <section id="research" class="container">
+        <span class="section-label">02 / RESEARCH</span>
+        <h2>Publications & Ongoing Work</h2>
+        
+        <div class="project-card featured reveal" style="margin-bottom: 40px; position: relative; overflow: hidden;">
+            <div style="display: flex; justify-content: space-between; font-family: var(--font-code); font-size: 0.8rem; margin-bottom: 20px;">
+                <span>📄 SemEval-2026 · ACL Anthology · Camera-Ready</span>
+                <span style="color: var(--accent-gold); font-weight: bold;">PUBLISHED 2026</span>
+            </div>
+            <h3 style="font-family: var(--font-display); font-size: 22px; margin-bottom: 10px;">Label-Wise Optimization with Adaptive Focal Loss for Polarization Manifestation Identification</h3>
+            <p style="font-family: var(--font-code); color: var(--accent-teal); margin-bottom: 20px;">TIAO E. · EDOU J.R. · GOHOUEDÉ M.A.L.</p>
+            <p style="font-style: italic; opacity: 0.7; margin-bottom: 30px;">"Polarization in social media is a growing threat to democratic discourse. This paper addresses the automatic detection of fine-grained polarization manifestations — Vilification, Dehumanization, and Extreme Language — in English and Hausa posts, a severely under-resourced language pair in NLP."</p>
+            
+            <div style="display: flex; gap: 40px; background: rgba(0,0,0,0.3); padding: 20px; border-radius: 8px; margin-bottom: 30px;">
+                <div><b style="color: var(--accent-gold);">English Track:</b> Ranked 15th · Macro-F1 = 0.464</div>
+                <div><b style="color: var(--accent-gold);">Hausa Track:</b> Ranked 6th · Macro-F1 = 0.192</div>
+            </div>
+
+            <div style="font-family: var(--font-code); font-size: 0.85rem; background: #000; padding: 20px; border-radius: 8px; border: 1px solid var(--surface-border); margin-bottom: 30px; opacity: 0.8;">
+                ┌─ github.com/TIAO-Eliasse/nlp_project ──────────────────────┐<br>
+                │  📓 Subsract_1_final.ipynb                                 │<br>
+                │     → Preprocessing · RoBERTa/XLM-R tokenization · EDA    │<br>
+                │  📓 substack_2_final.ipynb                                 │<br>
+                │     → Adaptive Focal Loss · One-vs-Rest training           │<br>
+                │  📓 substack_3_final.ipynb                                 │<br>
+                │     → Threshold optimization · Final submission            │<br>
+                └────────────────────────────────────────────────────────────┘
+            </div>
+
+            <div class="card-topics" style="margin-bottom: 30px;">
+                <span class="tag">[RoBERTa]</span> <span class="tag">[Afro-XLM-R]</span> <span class="tag">[Adaptive Focal Loss]</span> <span class="tag">[One-vs-Rest]</span> <span class="tag">[PyTorch]</span>
+            </div>
+            
+            <div style="display: flex; gap: 20px;">
+                <a href="#" class="btn btn-outline" style="padding: 10px 20px; font-size: 0.85rem;">Read Paper (ACL) ↗</a>
+                <a href="https://github.com/TIAO-Eliasse/nlp_project" target="_blank" class="btn btn-white" style="padding: 10px 20px; font-size: 0.85rem;">View on GitHub ↗</a>
+            </div>
+        </div>
+
+        <div class="project-card reveal" style="border-color: var(--accent-teal);">
+            <div style="display: flex; justify-content: space-between; font-family: var(--font-code); font-size: 0.8rem; margin-bottom: 20px;">
+                <span>AIMS / Stellenbosch University · Jan–Jun 2026</span>
+                <span style="color: var(--accent-teal); font-weight: bold; animation: pulse 2s infinite;">🔬 LIVE</span>
+            </div>
+            <h3 style="font-family: var(--font-display); font-size: 22px; margin-bottom: 10px;">Probabilistic Forecasting of Electricity Consumption & Solar PV Production with Explainable Uncertainty Attribution</h3>
+            <p style="font-family: var(--font-code); opacity: 0.6; margin-bottom: 20px;">Supervisors: Dr. Sabrina Amrouche & Amal Nammouchi</p>
+            <p style="opacity: 0.7; margin-bottom: 30px;">Developing a unified probabilistic framework that jointly models electricity consumption and solar PV production across hourly, daily, and weekly horizons. The core innovation combines conformal prediction for calibrated intervals (P10/P50/P90) with SHAP-based attribution to explain drivers of uncertainty — directly translating model outputs into actionable operational decisions.</p>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-family: var(--font-code); font-size: 0.8rem; opacity: 0.8; margin-bottom: 30px;">
+                <div>Quantile Regression (LightGBM)</div><div>Conformal Prediction</div>
+                <div>DeepVAR (multivariate DL)</div><div>SHAP Attribution</div>
+                <div>P10 / P50 / P90 intervals</div><div>Hourly · Daily · Weekly</div>
+            </div>
+            <div style="width: 100%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden;">
+                <div style="width: 65%; height: 100%; background: var(--accent-teal);"></div>
+            </div>
+            <div style="font-family: var(--font-code); font-size: 0.7rem; opacity: 0.5; margin-top: 10px; text-align: right;">Expected completion: June 2026</div>
+        </div>
+    </section>
+
+    <!-- Projects (GitHub generated) -->
+    <section id="projects" class="container">
+        <div style="display: flex; justify-content: space-between; align-items: baseline;">
+            <div>
+                <span class="section-label">03 / PROJECTS</span>
+                <h2>Projects</h2>
+            </div>
+            <div style="font-family: var(--font-code); font-size: 0.8rem; color: var(--accent-gold);">
+                <span data-github-total>Loading...</span>
+            </div>
+        </div>
+        <div style="font-family: var(--font-code); font-size: 0.8rem; opacity: 0.6; margin-top: -40px; margin-bottom: 40px;">
+            ⚡ Live data from github.com/TIAO-Eliasse · Updated in real-time
+        </div>
+        
+        <div class="project-grid">
+            <!-- Featured Card is injected here via Python, but handled via JS live updates -->
+            {cards_html}
+        </div>
+    </section>
+
+    <!-- Skills -->
+    <section id="skills" class="container">
+        <span class="section-label">04 / SKILLS</span>
+        <h2>Technical Arsenal</h2>
+
+        <div style="display: flex; border-bottom: 1px solid var(--surface-border); margin-bottom: 40px;">
+            <button class="tab-btn active" onclick="openTab(event, 'tab-ml')">AI & Machine Learning</button>
+            <button class="tab-btn" onclick="openTab(event, 'tab-stat')">Statistics & Causal Inference</button>
+            <button class="tab-btn" onclick="openTab(event, 'tab-tools')">Tools & Languages</button>
+        </div>
+
+        <svg style="width:0;height:0;position:absolute;" aria-hidden="true" focusable="false">
+          <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#4f8ef7" />
+            <stop offset="100%" stop-color="#00d4aa" />
+          </linearGradient>
+        </svg>
+
+        <div id="tab-ml" class="tab-content active reveal">
+            <div class="ring-grid">
+                <div>
+                    <div class="ring-container">
+                        <svg class="ring-svg" viewBox="0 0 36 36"><circle class="ring-bg" cx="18" cy="18" r="15.9"/><circle class="ring-fill" cx="18" cy="18" r="15.9" data-pct="95"/></svg>
+                        <div class="ring-text" data-val="95">0</div>
+                    </div>
+                    <div style="font-weight: 600; font-size: 0.9rem;">Explainable AI</div>
+                </div>
+                <div>
+                    <div class="ring-container">
+                        <svg class="ring-svg" viewBox="0 0 36 36"><circle class="ring-bg" cx="18" cy="18" r="15.9"/><circle class="ring-fill" cx="18" cy="18" r="15.9" data-pct="92"/></svg>
+                        <div class="ring-text" data-val="92">0</div>
+                    </div>
+                    <div style="font-weight: 600; font-size: 0.9rem;">XGBoost/LightGBM</div>
+                </div>
+                <div>
+                    <div class="ring-container">
+                        <svg class="ring-svg" viewBox="0 0 36 36"><circle class="ring-bg" cx="18" cy="18" r="15.9"/><circle class="ring-fill" cx="18" cy="18" r="15.9" data-pct="88"/></svg>
+                        <div class="ring-text" data-val="88">0</div>
+                    </div>
+                    <div style="font-weight: 600; font-size: 0.9rem;">NLP/Transformers</div>
+                </div>
+                <div>
+                    <div class="ring-container">
+                        <svg class="ring-svg" viewBox="0 0 36 36"><circle class="ring-bg" cx="18" cy="18" r="15.9"/><circle class="ring-fill" cx="18" cy="18" r="15.9" data-pct="84"/></svg>
+                        <div class="ring-text" data-val="84">0</div>
+                    </div>
+                    <div style="font-weight: 600; font-size: 0.9rem;">LangChain/LLMs</div>
+                </div>
+                <div>
+                    <div class="ring-container">
+                        <svg class="ring-svg" viewBox="0 0 36 36"><circle class="ring-bg" cx="18" cy="18" r="15.9"/><circle class="ring-fill" cx="18" cy="18" r="15.9" data-pct="82"/></svg>
+                        <div class="ring-text" data-val="82">0</div>
+                    </div>
+                    <div style="font-weight: 600; font-size: 0.9rem;">PyTorch/DL</div>
+                </div>
+                <div>
+                    <div class="ring-container">
+                        <svg class="ring-svg" viewBox="0 0 36 36"><circle class="ring-bg" cx="18" cy="18" r="15.9"/><circle class="ring-fill" cx="18" cy="18" r="15.9" data-pct="78"/></svg>
+                        <div class="ring-text" data-val="78">0</div>
+                    </div>
+                    <div style="font-weight: 600; font-size: 0.9rem;">Conformal Pred.</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="tab-stat" class="tab-content">
+            <div class="ring-grid">
+                <div><div class="ring-container"><svg class="ring-svg" viewBox="0 0 36 36"><circle class="ring-bg" cx="18" cy="18" r="15.9"/><circle class="ring-fill" cx="18" cy="18" r="15.9" data-pct="88"/></svg><div class="ring-text" data-val="88">0</div></div><div style="font-weight: 600; font-size: 0.9rem;">Panel Data</div></div>
+                <div><div class="ring-container"><svg class="ring-svg" viewBox="0 0 36 36"><circle class="ring-bg" cx="18" cy="18" r="15.9"/><circle class="ring-fill" cx="18" cy="18" r="15.9" data-pct="86"/></svg><div class="ring-text" data-val="86">0</div></div><div style="font-weight: 600; font-size: 0.9rem;">Causal / PSM</div></div>
+                <div><div class="ring-container"><svg class="ring-svg" viewBox="0 0 36 36"><circle class="ring-bg" cx="18" cy="18" r="15.9"/><circle class="ring-fill" cx="18" cy="18" r="15.9" data-pct="85"/></svg><div class="ring-text" data-val="85">0</div></div><div style="font-weight: 600; font-size: 0.9rem;">Bayesian Inf.</div></div>
+                <div><div class="ring-container"><svg class="ring-svg" viewBox="0 0 36 36"><circle class="ring-bg" cx="18" cy="18" r="15.9"/><circle class="ring-fill" cx="18" cy="18" r="15.9" data-pct="82"/></svg><div class="ring-text" data-val="82">0</div></div><div style="font-weight: 600; font-size: 0.9rem;">Time Series</div></div>
+                <div><div class="ring-container"><svg class="ring-svg" viewBox="0 0 36 36"><circle class="ring-bg" cx="18" cy="18" r="15.9"/><circle class="ring-fill" cx="18" cy="18" r="15.9" data-pct="78"/></svg><div class="ring-text" data-val="78">0</div></div><div style="font-weight: 600; font-size: 0.9rem;">Survival Analysis</div></div>
+                <div><div class="ring-container"><svg class="ring-svg" viewBox="0 0 36 36"><circle class="ring-bg" cx="18" cy="18" r="15.9"/><circle class="ring-fill" cx="18" cy="18" r="15.9" data-pct="76"/></svg><div class="ring-text" data-val="76">0</div></div><div style="font-weight: 600; font-size: 0.9rem;">Monte Carlo</div></div>
+            </div>
+        </div>
+
+        <div id="tab-tools" class="tab-content">
+            <div style="display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 40px;">
+                <span class="tag" style="font-size: 1rem; padding: 10px 20px;">Python</span><span class="tag" style="font-size: 1rem; padding: 10px 20px;">R</span><span class="tag" style="font-size: 1rem; padding: 10px 20px;">SQL</span><span class="tag" style="font-size: 1rem; padding: 10px 20px;">Stata</span><span class="tag" style="font-size: 1rem; padding: 10px 20px;">PyTorch</span><span class="tag" style="font-size: 1rem; padding: 10px 20px;">HuggingFace</span>
+                <span class="tag" style="font-size: 1rem; padding: 10px 20px;">Streamlit</span><span class="tag" style="font-size: 1rem; padding: 10px 20px;">LangChain</span><span class="tag" style="font-size: 1rem; padding: 10px 20px;">Power BI</span><span class="tag" style="font-size: 1rem; padding: 10px 20px;">LaTeX</span><span class="tag" style="font-size: 1rem; padding: 10px 20px;">Git</span>
+            </div>
+            <h3 style="font-family: var(--font-display); margin-bottom: 20px;">Languages</h3>
+            <div style="font-family: var(--font-code); opacity: 0.8; margin-bottom: 10px;">🇫🇷 French — Native <span style="color: var(--accent-teal);">████████████ 100%</span></div>
+            <div style="font-family: var(--font-code); opacity: 0.8;">🇬🇧 English — Academic/Full <span style="color: var(--accent-blue);">███████████▒  95%</span></div>
+        </div>
+    </section>
+
+    <!-- Experience -->
+    <section id="experience" class="container">
+        <span class="section-label">05 / EXPERIENCE</span>
+        <h2>Professional Journey</h2>
+        
+        <div class="timeline">
+            <div class="timeline-item reveal">
+                <div style="font-family: var(--font-code); font-size: 0.85rem; color: var(--accent-teal); margin-bottom: 10px;">2026 (Ongoing) — 🔬</div>
+                <h3 style="font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 5px;">Master's Research Project</h3>
+                <div style="font-weight: 600; opacity: 0.8; margin-bottom: 15px;">AIMS / Stellenbosch University</div>
+                <ul style="margin-left: 20px; opacity: 0.7; font-size: 0.95rem;">
+                    <li>Probabilistic forecasting for electricity + solar PV systems</li>
+                    <li>SHAP-based uncertainty attribution for operational explainability</li>
+                    <li>Methods: Quantile Regression, Conformal Prediction, DeepVAR</li>
+                    <li>Supervisors: Dr. Amrouche & Amal Nammouchi</li>
+                </ul>
+            </div>
+            <div class="timeline-item gold reveal">
+                <div style="font-family: var(--font-code); font-size: 0.85rem; color: var(--accent-gold); margin-bottom: 10px;">2025–2026 — 🎓 GOLD BADGE</div>
+                <h3 style="font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 5px; color: var(--accent-gold);">Google DeepMind Scholar / M.Sc. AI</h3>
+                <div style="font-weight: 600; opacity: 0.8; margin-bottom: 15px;">AIMS / Stellenbosch University</div>
+                <ul style="margin-left: 20px; opacity: 0.7; font-size: 0.95rem;">
+                    <li>Full scholarship — one of Africa's most competitive AI fellowships</li>
+                    <li>Coursework: XAI, NLP & LLMs, RL, Bayesian Inference, MLOps, Monte Carlo</li>
+                    <li>SemEval-2026: Ranked 6th (Hausa), 15th (English) globally</li>
+                    <li>Co-authored Camera-Ready paper — ACL Anthology 2026</li>
+                </ul>
+            </div>
+            <div class="timeline-item reveal">
+                <div style="font-family: var(--font-code); font-size: 0.85rem; color: var(--accent-teal); margin-bottom: 10px;">Mar–Jul 2025 — 💼</div>
+                <h3 style="font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 5px;">Statistician & Economist Intern</h3>
+                <div style="font-weight: 600; opacity: 0.8; margin-bottom: 15px;">National Institute of Statistics, Cameroon</div>
+                <ul style="margin-left: 20px; opacity: 0.7; font-size: 0.95rem;">
+                    <li>Designed 112-wave longitudinal pipeline (enterprise census + fiscal data)</li>
+                    <li>PSM impact evaluation: 26.3% vs 13.3% treatment effect on SME performance</li>
+                    <li>Deployed Streamlit risk monitoring dashboard for policy analysts</li>
+                </ul>
+            </div>
+            <div class="timeline-item reveal">
+                <div style="font-family: var(--font-code); font-size: 0.85rem; color: var(--accent-teal); margin-bottom: 10px;">Sep 2022–Jul 2025 — 🎓</div>
+                <h3 style="font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 5px;">Engineer in Statistics & Economics</h3>
+                <div style="font-weight: 600; opacity: 0.8; margin-bottom: 15px;">ISSEA-CEMAC, Cameroon</div>
+                <ul style="margin-left: 20px; opacity: 0.7; font-size: 0.95rem;">
+                    <li>Top engineering degree in Statistics in Central Africa</li>
+                    <li>Engineering thesis: SME survival prediction (C-index = 0.70)</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Honors -->
+    <section id="honors" class="container">
+        <span class="section-label">06 / HONORS</span>
+        <h2>Awards & Recognition</h2>
+        <p style="font-family: var(--font-code); opacity: 0.6; margin-top: -40px; margin-bottom: 40px;">Excellence recognized across three countries</p>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 40px;">
+            <div class="project-card reveal tilt" style="border-color: rgba(245, 200, 66, 0.4); background: linear-gradient(135deg, rgba(245, 200, 66, 0.1) 0%, transparent 100%);">
+                <h3 style="font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 10px; color: var(--accent-gold);">🎯 Google DeepMind Scholarship</h3>
+                <div style="font-family: var(--font-code); font-size: 0.7rem; opacity: 0.6; margin-bottom: 15px;">2025–present</div>
+                <p style="font-size: 0.85rem; opacity: 0.8; margin-bottom: 15px;">Full M.Sc. scholarship at AIMS · tuition + accommodation + living</p>
+                <span class="tag" style="color: var(--accent-gold); border: 1px solid var(--accent-gold);">ACTIVE · Stellenbosch University</span>
+            </div>
+            <div class="project-card reveal tilt" style="border-color: rgba(245, 200, 66, 0.2);">
+                <h3 style="font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 10px;">🏆 Finalist · IndabaX Hackathon</h3>
+                <div style="font-family: var(--font-code); font-size: 0.7rem; opacity: 0.6; margin-bottom: 15px;">Apr 2025</div>
+                <p style="font-size: 0.85rem; opacity: 0.8; margin-bottom: 15px;">National AI competition · Deep Learning Indaba network</p>
+                <span class="tag">National · Cameroon</span>
+            </div>
+            <div class="project-card reveal tilt" style="border-color: rgba(245, 200, 66, 0.2);">
+                <h3 style="font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 10px;">🥈 2nd Prize · Data Visualization</h3>
+                <div style="font-family: var(--font-code); font-size: 0.7rem; opacity: 0.6; margin-bottom: 15px;">Dec 2024</div>
+                <p style="font-size: 0.85rem; opacity: 0.8; margin-bottom: 15px;">Best storytelling · Employment Statistics in Africa · ISSEA</p>
+                <span class="tag">ISSEA-CEMAC · Cameroon</span>
+            </div>
+            <div class="project-card reveal tilt" style="border-color: rgba(245, 200, 66, 0.2);">
+                <h3 style="font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 10px;">📜 State Scholarship</h3>
+                <div style="font-family: var(--font-code); font-size: 0.7rem; opacity: 0.6; margin-bottom: 15px;">2020</div>
+                <p style="font-size: 0.85rem; opacity: 0.8; margin-bottom: 15px;">Merit-based national scholarship · top CPGE entry</p>
+                <span class="tag">National Merit · Burkina Faso</span>
+            </div>
+        </div>
+
+        <div class="reveal" style="font-family: var(--font-code); font-size: 0.8rem; opacity: 0.6; margin-bottom: 10px;">Certified (2024):</div>
+        <div class="reveal" style="display: flex; flex-wrap: wrap; gap: 10px;">
+            <span class="tag">Machine Learning Explainability</span> <span class="tag">Feature Engineering</span> <span class="tag">Time Series</span> <span class="tag">Deep Learning</span> <span class="tag">Geospatial Analysis</span> <span class="tag">Data Visualization</span>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="container">
+        <span class="section-label">07 / CONTACT</span>
+        <h2>Open to Opportunities</h2>
+        <p style="font-family: var(--font-code); opacity: 0.6; margin-top: -40px; margin-bottom: 60px;">Research internships · PhD positions · Collaborations · Consulting</p>
+        
+        <div style="display: grid; grid-template-columns: 45% 55%; gap: 60px;">
+            <div class="reveal">
+                <a href="mailto:eliasse@aims.ac.za" style="font-family: var(--font-display); font-size: 2.5rem; font-weight: 800; color: white; text-decoration: none; display: block; margin-bottom: 40px; transition: 0.3s;" onmouseover="this.style.color='var(--accent-blue)'" onmouseout="this.style.color='white'">eliasse@aims.ac.za</a>
+                
+                <div style="margin-bottom: 40px; line-height: 2; opacity: 0.8;">
+                    → Google DeepMind / IBM / Meta AI: LinkedIn DM<br>
+                    → Research collaborations: email<br>
+                    → Academic + consulting: email
+                </div>
+
+                <div class="social-row" style="display: flex; flex-direction: column; gap: 15px; margin-bottom: 40px;">
+                    <a href="https://github.com/TIAO-Eliasse" target="_blank">◆ github.com/TIAO-Eliasse</a>
+                    <a href="https://linkedin.com/in/eliasse-tiao" target="_blank">◆ linkedin.com/in/eliasse-tiao</a>
+                    <a href="mailto:eliasse@aims.ac.za">◆ eliasse@aims.ac.za</a>
+                </div>
+
+                <div style="font-family: var(--font-code); font-size: 0.8rem; color: var(--accent-gold); margin-bottom: 20px;">⚡ Typically responds within 24h</div>
+
+                <div style="background: rgba(255,255,255,0.05); border: 1px solid var(--surface-border); padding: 20px; border-radius: 8px; font-family: var(--font-code); font-size: 0.85rem; opacity: 0.8;">
+                    📍 Cape Town, South Africa · GMT+2<br>
+                    🌍 Open to remote & relocation worldwide
+                </div>
+            </div>
+            
+            <div class="reveal">
+                <form action="mailto:eliasse@aims.ac.za" method="post" enctype="text/plain" style="display: flex; flex-direction: column; gap: 20px;">
+                    <input type="text" name="Name" placeholder="Name" required style="width: 100%; padding: 15px; background: rgba(255,255,255,0.05); border: 1px solid var(--surface-border); border-radius: 4px; color: white; font-family: var(--font-body); font-size: 1rem; outline: none;">
+                    <input type="email" name="Email" placeholder="Email" required style="width: 100%; padding: 15px; background: rgba(255,255,255,0.05); border: 1px solid var(--surface-border); border-radius: 4px; color: white; font-family: var(--font-body); font-size: 1rem; outline: none;">
+                    <input type="text" name="Organization" placeholder="Organization (e.g., Google DeepMind, MIT)" style="width: 100%; padding: 15px; background: rgba(255,255,255,0.05); border: 1px solid var(--surface-border); border-radius: 4px; color: white; font-family: var(--font-body); font-size: 1rem; outline: none;">
+                    <select name="Subject" style="width: 100%; padding: 15px; background: rgba(255,255,255,0.05); border: 1px solid var(--surface-border); border-radius: 4px; color: white; font-family: var(--font-body); font-size: 1rem; outline: none; appearance: none;">
+                        <option value="Research Collaboration" style="background: #080810;">Research Collaboration</option>
+                        <option value="PhD Position Inquiry" style="background: #080810;">PhD Position Inquiry</option>
+                        <option value="Internship / Employment" style="background: #080810;">Internship / Employment</option>
+                        <option value="Other" style="background: #080810;">Other</option>
+                    </select>
+                    <textarea name="Message" rows="5" placeholder="Message" required style="width: 100%; padding: 15px; background: rgba(255,255,255,0.05); border: 1px solid var(--surface-border); border-radius: 4px; color: white; font-family: var(--font-body); font-size: 1rem; outline: none; resize: vertical;"></textarea>
+                    <div class="btn-magnetic" style="width: 100%;">
+                        <button type="submit" class="btn btn-primary btn-inner" style="width: 100%; justify-content: center; cursor: none; border: none;">Send Message →</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer style="border-top: 1px solid rgba(255,255,255,0.08); padding: 40px; display: flex; justify-content: space-between; align-items: center; font-family: var(--font-code); font-size: 0.8rem; opacity: 0.6; flex-wrap: wrap; gap: 20px;">
+        <div style="font-family: var(--font-display); font-size: 1.5rem; font-weight: 800;">ET</div>
+        <div>© 2026 Eliasse TIAO · AI Researcher · Cape Town, South Africa</div>
+        <div style="display: flex; gap: 20px;">
+            <a href="https://github.com/TIAO-Eliasse" style="color: white; text-decoration: none;">GitHub</a>
+            <a href="https://linkedin.com/in/eliasse-tiao" style="color: white; text-decoration: none;">LinkedIn</a>
+        </div>
+        <div style="width: 100%; text-align: center; font-size: 0.7rem; margin-top: 20px;">Designed & coded with precision · Pure HTML / CSS / JS · Zero frameworks</div>
+    </footer>
+
+    <script>
+        // --- 0. Loading Screen ---
+        window.addEventListener('load', () => {{
+            const loader = document.getElementById('loader');
+            const progress = document.getElementById('loader-progress');
+            const nameAnim = document.getElementById('hero-name-anim');
+            
+            setTimeout(() => {{ progress.style.width = '100%'; }}, 100);
+            
+            setTimeout(() => {{
+                loader.style.opacity = '0';
+                setTimeout(() => {{ loader.style.display = 'none'; }}, 500);
+                
+                // Name Letter by Letter (Effect #3)
+                const nameText = "ELIASSE TIAO";
+                nameAnim.innerHTML = '';
+                nameText.split('').forEach((char, i) => {{
+                    const span = document.createElement('span');
+                    span.textContent = char;
+                    span.style.opacity = '0';
+                    span.style.display = 'inline-block';
+                    span.style.transform = 'translateY(30px)';
+                    span.style.transition = 'all 0.4s ease';
+                    nameAnim.appendChild(span);
+                    setTimeout(() => {{
+                        span.style.opacity = '1';
+                        span.style.transform = 'translateY(0)';
+                    }}, i * 60);
+                }});
+                
+            }}, 2000);
+        }});
+
+        // --- 1. Neural Network Canvas ---
+        const canvas = document.getElementById('neural-canvas');
+        const ctx = canvas.getContext('2d');
+        let nodes = [];
+        let mouseX = -1000, mouseY = -1000;
+
+        function resizeCanvas() {{
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }}
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        window.addEventListener('mousemove', (e) => {{ mouseX = e.clientX; mouseY = e.clientY; }});
+
+        class Node {{
+            constructor() {{
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.r = 1.5 + Math.random() * 2;
+                this.offset = Math.random() * 1000;
+            }}
+            update() {{
+                this.x += this.vx; this.y += this.vy;
+                if(this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                if(this.y < 0 || this.y > canvas.height) this.vy *= -1;
+            }}
+        }}
+        for(let i=0; i<70; i++) nodes.push(new Node());
+
+        function animateCanvas(time) {{
+            if(document.visibilityState === 'hidden') {{ requestAnimationFrame(animateCanvas); return; }}
+            ctx.clearRect(0,0,canvas.width, canvas.height);
+            
+            nodes.forEach((n, i) => {{
+                n.update();
+                const distToMouse = Math.hypot(n.x - mouseX, n.y - mouseY);
+                const mouseBoost = distToMouse < 120 ? 1.4 : 1;
+                const pulse = Math.abs(Math.sin(time * 0.002 + n.offset)) * 0.5 + 0.5;
+                
+                ctx.beginPath();
+                ctx.arc(n.x, n.y, n.r * pulse * mouseBoost, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(79, 142, 247, ${{0.8 * mouseBoost}})`;
+                ctx.fill();
+
+                for(let j=i+1; j<nodes.length; j++) {{
+                    const m = nodes[j];
+                    const dist = Math.hypot(n.x - m.x, n.y - m.y);
+                    if(dist < 140) {{
+                        ctx.beginPath(); ctx.moveTo(n.x, n.y); ctx.lineTo(m.x, m.y);
+                        ctx.strokeStyle = `rgba(0, 212, 170, ${{(1 - dist/140) * 0.5}})`;
+                        ctx.lineWidth = 0.5; ctx.stroke();
+                    }}
+                }}
+            }});
+            requestAnimationFrame(animateCanvas);
+        }}
+        requestAnimationFrame(animateCanvas);
+
+        // --- 2. Custom Cursor ---
+        const dot = document.getElementById('cursor-dot');
+        const glow = document.getElementById('cursor-glow');
+        let cx = 0, cy = 0, tx = 0, ty = 0;
+        window.addEventListener('mousemove', (e) => {{
+            tx = e.clientX; ty = e.clientY;
+            dot.style.transform = `translate(${{tx}}px, ${{ty}}px) translate(-50%, -50%)`;
+        }});
+        function renderCursor() {{
+            cx += (tx - cx) * 0.2; cy += (ty - cy) * 0.2;
+            glow.style.transform = `translate(${{cx}}px, ${{cy}}px) translate(-50%, -50%)`;
+            requestAnimationFrame(renderCursor);
+        }}
+        renderCursor();
+
+        document.querySelectorAll('a, button, input, textarea, select').forEach(el => {{
+            el.addEventListener('mouseenter', () => {{
+                dot.style.width = '40px'; dot.style.height = '40px';
+                dot.style.mixBlendMode = 'difference'; dot.style.backgroundColor = 'white';
+            }});
+            el.addEventListener('mouseleave', () => {{
+                dot.style.width = '8px'; dot.style.height = '8px';
+                dot.style.mixBlendMode = 'normal'; dot.style.backgroundColor = 'var(--accent-blue)';
+            }});
+        }});
+
+        // --- 4. Typewriter ---
+        const roles = ["AI Researcher", "XAI & Explainability Specialist", "NLP Engineer · Transformers", "Probabilistic Forecaster", "Google DeepMind Scholar", "SemEval-2026 Author · ACL Anthology"];
+        let rIdx = 0, cIdx = 0, isDel = false;
+        function typeRole() {{
+            const cur = roles[rIdx];
+            document.getElementById('typewriter').textContent = isDel ? cur.slice(0, cIdx--) : cur.slice(0, cIdx++);
+            if(!isDel && cIdx > cur.length) {{ isDel = true; setTimeout(typeRole, 2200); }}
+            else if(isDel && cIdx < 0) {{ isDel = false; rIdx = (rIdx + 1) % roles.length; setTimeout(typeRole, 500); }}
+            else setTimeout(typeRole, isDel ? 35 : 75);
+        }}
+        typeRole();
+
+        // --- 5. Scroll Reveal & 6. Counters & 9. SVG Rings ---
+        const observer = new IntersectionObserver((entries) => {{
+            entries.forEach(e => {{
+                if(e.isIntersecting) {{
+                    e.target.classList.add('visible');
+                    
+                    // Counters
+                    e.target.querySelectorAll('.stat-num').forEach(el => {{
+                        if(el.dataset.animated) return;
+                        el.dataset.animated = "true";
+                        const target = +el.getAttribute('data-val');
+                        const suffix = el.getAttribute('data-suffix') || '';
+                        let curr = 0;
+                        const t = setInterval(() => {{
+                            curr += Math.ceil(target/30);
+                            if(curr >= target) {{ 
+                                el.textContent = target + suffix; 
+                                clearInterval(t); 
+                                el.style.color = '#f5c842';
+                                setTimeout(() => el.style.color = '', 300);
+                            }}
+                            else el.textContent = curr + suffix;
+                        }}, 40);
+                    }});
+
+                    // SVG Rings
+                    e.target.querySelectorAll('.ring-fill').forEach(el => {{
+                        if(el.dataset.animated) return;
+                        el.dataset.animated = "true";
+                        const pct = +el.getAttribute('data-pct');
+                        el.style.strokeDashoffset = 100 - pct; // since dasharray is 100
+                    }});
+                    
+                    e.target.querySelectorAll('.ring-text').forEach(el => {{
+                        if(el.dataset.animated) return;
+                        el.dataset.animated = "true";
+                        const target = +el.getAttribute('data-val');
+                        let curr = 0;
+                        const t = setInterval(() => {{
+                            curr += Math.ceil(target/30);
+                            if(curr >= target) {{ el.textContent = target + '%'; clearInterval(t); }}
+                            else el.textContent = curr + '%';
+                        }}, 40);
+                    }});
+                }}
+            }});
+        }}, {{ threshold: 0.08 }});
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // --- 7. Magnetic Buttons ---
+        document.querySelectorAll('.btn-magnetic').forEach(btn => {{
+            btn.addEventListener('mousemove', (e) => {{
+                const r = btn.getBoundingClientRect();
+                const dx = e.clientX - (r.left + r.width/2);
+                const dy = e.clientY - (r.top + r.height/2);
+                btn.style.transform = `translate(${{dx*0.35}}px, ${{dy*0.35}}px)`;
+                const inner = btn.querySelector('.btn-inner');
+                if(inner) inner.style.transform = `translate(${{dx*0.15}}px, ${{dy*0.15}}px)`;
+            }});
+            btn.addEventListener('mouseleave', () => {{
+                btn.style.transform = 'translate(0,0)';
+                const inner = btn.querySelector('.btn-inner');
+                if(inner) inner.style.transform = 'translate(0,0)';
+            }});
+        }});
+
+        // --- 8. 3D Card Tilt ---
+        document.querySelectorAll('.tilt').forEach(card => {{
+            card.addEventListener('mousemove', (e) => {{
+                const r = card.getBoundingClientRect();
+                const x = (e.clientX - r.left) / r.width - 0.5;
+                const y = (e.clientY - r.top) / r.height - 0.5;
+                card.style.transform = `perspective(1200px) rotateX(${{-y*24}}deg) rotateY(${{x*24}}deg) scale(1.02)`;
+            }});
+            card.addEventListener('mouseleave', () => {{
+                card.style.transform = 'perspective(1200px) rotateX(0) rotateY(0) scale(1)';
+            }});
+        }});
+
+        // --- 10. Sticky Navbar ---
+        window.addEventListener('scroll', () => {{
+            document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
+        }});
+
+        // Active Nav Items
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.nav-links a');
+        window.addEventListener('scroll', () => {{
+            let current = '';
+            sections.forEach(sec => {{
+                const secTop = sec.offsetTop;
+                if(scrollY >= secTop - 200) current = sec.getAttribute('id');
+            }});
+            navLinks.forEach(link => {{
+                link.classList.remove('active');
+                if(link.getAttribute('href').includes(current)) link.classList.add('active');
+            }});
+        }});
+
+        // --- 11. GitHub Live Stats ---
+        const GITHUB_USER = 'TIAO-Eliasse';
+        async function loadGitHubProjects() {{
+            try {{
+                const res = await fetch(`https://api.github.com/users/${{GITHUB_USER}}/repos?per_page=100&sort=updated`);
+                const repos = await res.json();
+                
+                repos.forEach(repo => {{
+                    const card = document.querySelector(`[data-repo="${{repo.name}}"]`);
+                    if (!card) return;
+
+                    const langEl = card.querySelector('.repo-lang');
+                    const starsEl = card.querySelector('.repo-stars');
+                    const updatedEl = card.querySelector('.repo-updated');
+                    const linkEl = card.querySelector('.repo-link');
+
+                    if (langEl && repo.language) {{
+                        langEl.innerHTML = `● ${{repo.language}}`;
+                        langEl.style.color = getLangColor(repo.language);
+                    }}
+                    if (starsEl) starsEl.textContent = `⭐ ${{repo.stargazers_count}}`;
+                    if (updatedEl) updatedEl.textContent = timeAgo(repo.updated_at);
+                    if (linkEl) linkEl.href = repo.html_url;
+                }});
+
+                const totalEls = document.querySelectorAll('[data-github-total]');
+                totalEls.forEach(el => el.textContent = repos.length + ' public repos');
+            }} catch (e) {{
+                console.log('GitHub API unavailable — static content displayed');
+            }}
+        }}
+
+        function timeAgo(dateStr) {{
+            const days = Math.floor((Date.now() - new Date(dateStr)) / 86400000);
+            if (days === 0) return 'Updated today';
+            if (days === 1) return 'Updated yesterday';
+            if (days < 30) return `Updated ${{days}}d ago`;
+            const months = Math.floor(days / 30);
+            return `Updated ${{months}}mo ago`;
+        }}
+
+        function getLangColor(lang) {{
+            const colors = {{
+                'Python': '#3572A5', 'Jupyter Notebook': '#DA5B0B',
+                'R': '#198CE7', 'JavaScript': '#F1E05A',
+                'HTML': '#E34C26', 'CSS': '#563D7C', 'Shell': '#89E051'
+            }};
+            return colors[lang] || '#4f8ef7';
+        }}
+        window.addEventListener('load', loadGitHubProjects);
+
+        // --- Tabs ---
+        function openTab(evt, tabName) {{
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById(tabName).classList.add('active');
+            evt.currentTarget.classList.add('active');
+            
+            // re-trigger animation
+            const rings = document.getElementById(tabName).querySelectorAll('.ring-fill');
+            rings.forEach(r => {{
+                r.style.strokeDashoffset = 100;
+                setTimeout(() => {{ r.style.strokeDashoffset = 100 - r.getAttribute('data-pct'); }}, 50);
+            }});
+        }}
+
+        // Live Clock
+        setInterval(() => {{
+            const d = new Date();
+            const time = d.toLocaleTimeString('en-US', {{ timeZone: 'Africa/Johannesburg', hour12: false }});
+            document.getElementById('live-clock').textContent = `Cape Town, ZA · ${{time}} GMT+2`;
+        }}, 1000);
+
+    </script>
+</body>
+</html>
+"""
+
+with open('index.html', 'w', encoding='utf-8') as f:
+    f.write(html_content)
+print("index.html generated successfully.")
