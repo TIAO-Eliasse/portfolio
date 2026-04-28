@@ -5,7 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eliasse TIAO | AI Researcher & Google DeepMind Scholar</title>
     
-    <!-- Premium Fonts -->
+    <!-- SEO & OpenGraph -->
+    <meta name="description" content="Portfolio of Eliasse TIAO, AI Researcher and Google DeepMind Scholar. Specialized in XAI, NLP, and Probabilistic Forecasting.">
+    <meta property="og:title" content="Eliasse TIAO — Neural Precision Portfolio">
+    <meta property="og:description" content="Advancing the frontiers of trustworthy AI for high-stakes decisions.">
+    
+    <!-- Premium Typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@300;500;700;800&display=swap" rel="stylesheet">
@@ -22,16 +27,11 @@
             --font-display: 'Space Grotesk', sans-serif;
             --font-body: 'Inter', sans-serif;
             --font-code: 'JetBrains Mono', monospace;
-            --transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            --transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            cursor: none;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+        html { scroll-behavior: smooth; }
         body {
             background-color: var(--bg-black);
             color: var(--text-white);
@@ -40,446 +40,115 @@
             line-height: 1.6;
         }
 
-        /* --- Signature Effects --- */
+        /* --- Signature Interactions --- */
         #cursor-glow {
-            position: fixed;
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, rgba(79, 142, 247, 0.12) 0%, transparent 70%);
-            pointer-events: none;
-            z-index: 9999;
-            transform: translate(-50%, -50%);
+            position: fixed; width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(79, 142, 247, 0.1) 0%, transparent 70%);
+            pointer-events: none; z-index: 9999; transform: translate(-50%, -50%);
         }
-
         #cursor-dot {
-            position: fixed;
-            width: 6px;
-            height: 6px;
-            background: var(--accent-blue);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 10000;
-            transform: translate(-50%, -50%);
+            position: fixed; width: 6px; height: 6px;
+            background: var(--accent-blue); border-radius: 50%;
+            pointer-events: none; z-index: 10000; transform: translate(-50%, -50%);
             box-shadow: 0 0 15px var(--accent-blue);
         }
 
-        /* --- Grid Background --- */
-        .grid-overlay {
-            position: fixed;
-            inset: 0;
-            background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), 
-                              linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-            background-size: 50px 50px;
-            z-index: -1;
-            pointer-events: none;
-            mask-image: radial-gradient(circle at center, black, transparent 90%);
+        /* --- Components --- */
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 60px; }
+        .section-tag {
+            font-family: var(--font-code); font-size: 0.8rem;
+            text-transform: uppercase; letter-spacing: 0.3em;
+            color: var(--accent-teal); margin-bottom: 20px; display: block;
         }
-
-        /* --- Layout --- */
-        .container {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 0 40px;
-        }
-
-        section {
-            padding: 120px 0;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+        .text-gradient {
+            background: linear-gradient(to bottom, #fff 50%, rgba(255,255,255,0.5));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
 
         /* --- Navigation --- */
         nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            padding: 30px 60px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 1000;
-            transition: var(--transition);
+            position: fixed; top: 0; width: 100%; padding: 30px 60px;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 1000; transition: var(--transition);
         }
-
         nav.scrolled {
-            padding: 20px 60px;
-            background: rgba(8, 8, 16, 0.85);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--surface-border);
+            padding: 20px 60px; background: rgba(8, 8, 16, 0.9);
+            backdrop-filter: blur(25px); border-bottom: 1px solid var(--surface-border);
         }
-
         .nav-logo {
-            font-family: var(--font-display);
-            font-weight: 800;
-            font-size: 1.4rem;
-            letter-spacing: -0.05em;
-            color: white;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 12px;
+            font-family: var(--font-display); font-weight: 800; font-size: 1.4rem;
+            color: white; text-decoration: none; display: flex; align-items: center; gap: 12px;
         }
-
-        .nav-logo-box {
-            width: 32px;
-            height: 32px;
-            background: linear-gradient(135deg, var(--accent-blue), var(--accent-teal));
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--bg-black);
-            font-size: 0.8rem;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 30px;
-        }
-
+        .nav-links { display: flex; gap: 35px; }
         .nav-links a {
-            text-decoration: none;
-            color: var(--text-white);
-            font-size: 0.85rem;
-            font-weight: 500;
-            opacity: 0.5;
-            transition: var(--transition);
+            text-decoration: none; color: var(--text-white); font-size: 0.85rem;
+            font-weight: 500; opacity: 0.5; transition: var(--transition);
         }
-
-        .nav-links a:hover, .nav-links a.active {
-            opacity: 1;
-            color: var(--accent-blue);
-        }
+        .nav-links a:hover, .nav-links a.active { opacity: 1; color: var(--accent-blue); }
 
         /* --- Hero --- */
-        #hero {
-            padding-top: 150px;
-            position: relative;
-        }
-
-        #neural-canvas {
-            position: absolute;
-            inset: 0;
-            z-index: -1;
-            opacity: 0.5;
-        }
-
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 6px 16px;
-            background: rgba(0, 212, 170, 0.08);
-            border: 1px solid rgba(0, 212, 170, 0.2);
-            border-radius: 50px;
-            font-family: var(--font-code);
-            font-size: 0.75rem;
-            color: var(--accent-teal);
-            margin-bottom: 30px;
-        }
-
-        .pulse-dot {
-            width: 6px;
-            height: 6px;
-            background: var(--accent-teal);
-            border-radius: 50%;
-            box-shadow: 0 0 10px var(--accent-teal);
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.6); opacity: 0.4; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        .hero-tagline {
-            font-family: var(--font-code);
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 0.25em;
-            color: var(--accent-gold);
-            margin-bottom: 15px;
-        }
-
+        #hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; position: relative; }
+        #neural-canvas { position: absolute; inset: 0; z-index: -1; opacity: 0.4; }
+        .hero-layout { display: grid; grid-template-columns: 1fr auto; align-items: flex-end; gap: 80px; }
         .hero-title {
-            font-family: var(--font-display);
-            font-size: clamp(3.5rem, 9vw, 8rem);
-            font-weight: 800;
-            line-height: 0.95;
-            letter-spacing: -0.04em;
-            margin-bottom: 25px;
+            font-family: var(--font-display); font-size: clamp(4rem, 10vw, 9rem);
+            font-weight: 800; line-height: 0.9; letter-spacing: -0.04em; margin-bottom: 30px;
         }
+        .hero-subtitle { font-family: var(--font-code); font-size: 1.4rem; color: var(--accent-blue); margin-bottom: 30px; }
+        .hero-bio { max-width: 700px; font-size: 1.25rem; opacity: 0.7; font-weight: 300; margin-bottom: 50px; }
 
-        .text-gradient {
-            background: linear-gradient(to bottom, #fff 40%, rgba(255,255,255,0.6));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        /* --- Portrait & Cards --- */
+        .portrait-frame {
+            position: relative; padding: 12px; background: var(--surface);
+            border: 1px solid var(--surface-border); border-radius: 32px; width: 360px;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.6);
         }
+        .portrait-img { width: 100%; height: 480px; object-fit: cover; border-radius: 20px; }
 
-        .hero-subtitle {
-            font-family: var(--font-code);
-            font-size: 1.2rem;
-            color: var(--accent-blue);
-            margin-bottom: 30px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .hero-bio {
-            max-width: 600px;
-            font-size: 1.1rem;
-            opacity: 0.7;
-            margin-bottom: 50px;
-        }
-
-        .cta-row {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            font-family: var(--font-display);
-            font-weight: 600;
-            padding: 16px 36px;
-            border-radius: 50px;
-            text-decoration: none;
-            transition: var(--transition);
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 0.95rem;
-            border: 1px solid transparent;
-        }
-
-        .btn-primary {
-            background: var(--accent-blue);
-            color: white;
-            box-shadow: 0 10px 40px rgba(79, 142, 247, 0.25);
-        }
-
-        .btn-outline {
-            background: rgba(255, 255, 255, 0.05);
-            border-color: var(--surface-border);
-            color: white;
-            backdrop-filter: blur(10px);
-        }
-
-        .btn:hover {
-            transform: translateY(-5px);
-            border-color: white;
-        }
-
-        /* --- Portrait --- */
-        .hero-layout {
-            display: grid;
-            grid-template-columns: 1fr auto;
-            align-items: flex-end;
-            gap: 60px;
-        }
-
-        .portrait-card {
-            position: relative;
-            padding: 10px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--surface-border);
-            border-radius: 24px;
-            overflow: hidden;
-            width: 320px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
-        }
-
-        .portrait-img {
-            width: 100%;
-            height: 420px;
-            object-fit: cover;
-            border-radius: 16px;
-            filter: grayscale(0.2) contrast(1.1);
-        }
-
-        .portrait-glow {
-            position: absolute;
-            inset: -40px;
-            background: radial-gradient(circle at bottom right, var(--accent-blue), transparent 60%);
-            opacity: 0.3;
-            z-index: -1;
-            filter: blur(40px);
-        }
-
-        /* --- Stat Cards --- */
-        .stat-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 25px;
-            margin-top: 60px;
-        }
-
-        .stat-card {
-            background: var(--surface);
-            border: 1px solid var(--surface-border);
-            padding: 30px;
-            border-radius: 20px;
-            transition: var(--transition);
-        }
-
-        .stat-card:hover {
-            border-color: var(--accent-teal);
-            transform: translateY(-8px);
-        }
-
-        .stat-value {
-            display: block;
-            font-family: var(--font-display);
-            font-size: 3.5rem;
-            font-weight: 800;
-            color: var(--accent-teal);
-            line-height: 1;
-        }
-
-        .stat-label {
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 0.15em;
-            opacity: 0.6;
-            margin-top: 10px;
-            display: block;
-        }
-
-        /* --- Project Card (Lovable Style) --- */
-        .project-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-            gap: 30px;
-        }
-
-        .project-card {
-            position: relative;
+        .glass-card {
             background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, transparent 100%);
-            border: 1px solid var(--surface-border);
-            padding: 45px;
-            border-radius: 30px;
-            transition: var(--transition);
-            overflow: hidden;
+            border: 1px solid var(--surface-border); border-radius: 24px;
+            padding: 40px; transition: var(--transition); position: relative;
         }
+        .glass-card:hover { border-color: var(--accent-blue); transform: translateY(-10px); }
 
-        .project-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 200px;
-            height: 200px;
-            background: radial-gradient(circle, rgba(79, 142, 247, 0.1) 0%, transparent 70%);
-            z-index: -1;
+        /* --- Project Matrix --- */
+        .forge-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; }
+        .repo-card {
+            padding: 35px; border-radius: 20px; background: var(--surface);
+            border: 1px solid var(--surface-border); transition: var(--transition);
         }
-
-        .project-card:hover {
-            border-color: var(--accent-blue);
-            transform: scale(1.02);
-        }
-
-        .project-meta {
-            font-family: var(--font-code);
-            font-size: 0.7rem;
-            color: var(--accent-teal);
-            margin-bottom: 20px;
-            display: block;
-        }
-
-        .project-card h3 {
-            font-family: var(--font-display);
-            font-size: 1.8rem;
-            margin-bottom: 20px;
-        }
-
-        .project-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 30px;
-        }
-
-        .tag {
-            font-family: var(--font-code);
-            font-size: 0.7rem;
-            padding: 4px 12px;
-            background: rgba(255,255,255,0.05);
-            border-radius: 4px;
-            border: 1px solid var(--surface-border);
-            color: var(--accent-blue);
+        .repo-card:hover { border-color: var(--accent-teal); transform: scale(1.02); }
+        .repo-title { font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 15px; display: block; }
+        .repo-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+        .tag-pill {
+            font-family: var(--font-code); font-size: 0.7rem; padding: 4px 12px;
+            background: rgba(255,255,255,0.05); border-radius: 4px; color: var(--accent-blue);
         }
 
         /* --- Skill Rings --- */
-        .skill-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 40px;
-            text-align: center;
-        }
-
-        .ring-container {
-            position: relative;
-            width: 100px;
-            height: 100px;
-            margin: 0 auto 20px;
-        }
-
-        .ring-svg {
-            transform: rotate(-90deg);
-        }
-
-        .ring-bg {
-            fill: none;
-            stroke: rgba(255,255,255,0.05);
-            stroke-width: 6;
-        }
-
+        .skills-matrix { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; text-align: center; }
+        .ring-wrap { position: relative; width: 120px; height: 120px; margin: 0 auto 20px; }
+        .ring-svg { transform: rotate(-90deg); }
+        .ring-bg { fill: none; stroke: rgba(255,255,255,0.05); stroke-width: 4; }
         .ring-fill {
-            fill: none;
-            stroke: var(--accent-teal);
-            stroke-width: 6;
-            stroke-linecap: round;
-            stroke-dasharray: 283; /* 2 * PI * 45 */
-            stroke-dashoffset: 283;
-            transition: stroke-dashoffset 2s ease-out;
+            fill: none; stroke: var(--accent-teal); stroke-width: 4;
+            stroke-dasharray: 283; stroke-dashoffset: 283; transition: stroke-dashoffset 2s ease;
         }
 
-        .ring-text {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: var(--font-display);
-            font-size: 1.2rem;
-            font-weight: 700;
-        }
+        /* --- Section Reveal --- */
+        .reveal { opacity: 0; transform: translateY(50px); transition: all 1s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
 
-        /* --- Sections Reveal --- */
-        .reveal {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: all 1s ease-out;
-        }
+        /* --- Footer --- */
+        footer { padding: 120px 0 60px; border-top: 1px solid var(--surface-border); text-align: center; opacity: 0.4; }
 
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* --- Responsiveness --- */
         @media (max-width: 1024px) {
-            .hero-layout { grid-template-columns: 1fr; text-align: center; }
-            .hero-title { font-size: 4rem; }
-            .portrait-card { margin: 0 auto; }
-            .cta-row { justify-content: center; }
-            .nav-links { display: none; }
-            .nav-logo { font-size: 1.2rem; }
-            nav { padding: 20px 40px; }
+            .hero-layout, .forge-grid { grid-template-columns: 1fr; }
+            .portrait-frame { margin: 0 auto; width: 100%; max-width: 360px; }
+            .container { padding: 0 30px; }
+            nav { padding: 20px 30px; }
+            .hero-title { font-size: 3.5rem; }
         }
     </style>
 </head>
@@ -487,160 +156,210 @@
 
     <div id="cursor-glow"></div>
     <div id="cursor-dot"></div>
-    <div class="grid-overlay"></div>
 
     <nav id="navbar">
-        <a href="#" class="nav-logo">
-            <div class="nav-logo-box">ET</div>
-            Eliasse TIAO
-        </a>
+        <a href="#" class="nav-logo">ELIASSE TIAO</a>
         <div class="nav-links">
-            <a href="#about">About</a>
-            <a href="#research">Research</a>
-            <a href="#projects">Forge</a>
-            <a href="#skills">Matrix</a>
-            <a href="#contact">Contact</a>
+            <a href="#about">Biosphere</a>
+            <a href="#research">Codex</a>
+            <a href="#forge">The Forge</a>
+            <a href="#matrix">Matrix</a>
+            <a href="#contact">Uplink</a>
         </div>
-        <a href="Eliasse_TIAO_CV.pdf" download class="btn btn-outline" style="padding: 10px 24px; font-size: 0.8rem;">CV ↓</a>
+        <a href="Eliasse_TIAO_CV.pdf" download class="btn btn-outline" style="padding: 10px 24px; border-radius: 8px; font-size: 0.8rem;">CV [PDF] ↓</a>
     </nav>
 
     <section id="hero" class="container">
         <canvas id="neural-canvas"></canvas>
         <div class="hero-layout">
-            <div class="hero-text">
-                <div class="hero-badge">
-                    <div class="pulse-dot"></div> Open to Research Opportunities
-                </div>
-                <div class="hero-tagline">Google DeepMind Scholar · AIMS 2026</div>
-                <h1 class="hero-title text-gradient" id="name-glitch">ELIASSE TIAO</h1>
+            <div class="hero-content">
+                <span class="hero-tagline">DeepMind Scholar · AIMS 2026</span>
+                <h1 class="hero-title text-gradient">Pioneering<br>Trustworthy AI.</h1>
                 <div class="hero-subtitle">
-                    <span style="color: var(--accent-blue)">></span>
+                    <span style="color: var(--accent-blue)">$</span>
                     <span id="typewriter"></span>
                 </div>
-                <p class="hero-bio">Building trustworthy AI systems for high-stakes decisions through Explainable AI (XAI), NLP, and Probabilistic Forecasting.</p>
-                <div class="cta-row">
-                    <a href="#research" class="btn btn-primary">View Research ↗</a>
-                    <a href="#projects" class="btn btn-outline">Featured Projects</a>
+                <p class="hero-bio">
+                    Building robust, interpretable systems for high-stakes decision making. 
+                    Researcher in Explainable AI (XAI), NLP, and Probabilistic Forecasting.
+                </p>
+                <div style="display: flex; gap: 20px;">
+                    <a href="#research" class="btn" style="background: var(--accent-blue); color: white;">Explore Codex ↗</a>
+                    <a href="#forge" class="btn" style="border: 1px solid var(--surface-border); color: white;">View Repositories</a>
                 </div>
             </div>
-            <div class="portrait-card">
-                <div class="portrait-glow"></div>
+            <div class="portrait-frame">
                 <img src="src/assets/hero.png" alt="Eliasse TIAO" class="portrait-img">
             </div>
         </div>
     </section>
 
     <section id="about" class="container reveal">
-        <div class="hero-tagline">01 — About</div>
-        <h2 style="font-family: var(--font-display); font-size: 3rem; margin-bottom: 40px;">Bridging AI Research & Impact</h2>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 60px;">
-            <div style="font-size: 1.2rem; opacity: 0.8;">
-                <p>I am an M.Sc. AI student at AIMS, Google DeepMind Scholar, and Statistician-Economist. My research focuses on Explainable AI (XAI), NLP, and probabilistic forecasting.</p>
+        <span class="section-tag">01 — Biosphere</span>
+        <h2 style="font-family: var(--font-display); font-size: 3.5rem; margin-bottom: 40px;">Intersection of Data & Decision.</h2>
+        <div style="display: grid; grid-template-columns: 3fr 2fr; gap: 80px;">
+            <div style="font-size: 1.25rem; opacity: 0.8; font-weight: 300;">
+                <p>Based in Cape Town, South Africa, my journey spans from the vibrant academic landscapes of <b>Burkina Faso</b> and <b>Cameroon</b> to the elite research environment of the <b>African Institute for Mathematical Sciences (AIMS)</b>.</p>
                 <br>
-                <p>I co-authored a Camera-Ready paper at SemEval-2026 (ACL Anthology) on polarization detection using transformer-based LLMs. My goal is to build AI that is both powerful and interpretable.</p>
-            </div>
-            <div class="stat-grid" style="margin-top: 0;">
-                <div class="stat-card">
-                    <span class="stat-value" data-val="1">0</span>
-                    <span class="stat-label">Publication</span>
+                <p>As a <b>Google DeepMind Scholar</b>, I bridge the gap between high-level Statistical Engineering and cutting-edge Artificial Intelligence. My work is dedicated to making AI transparent, accountable, and operationally reliable for sectors where uncertainty is not an option—finance, energy, and governance.</p>
+                <div style="margin-top: 40px; display: flex; gap: 15px;">
+                    <span style="padding: 6px 16px; border: 1px solid var(--accent-teal); color: var(--accent-teal); border-radius: 50px; font-size: 0.8rem;">Stat-Economist</span>
+                    <span style="padding: 6px 16px; border: 1px solid var(--accent-blue); color: var(--accent-blue); border-radius: 50px; font-size: 0.8rem;">AI Researcher</span>
                 </div>
-                <div class="stat-card">
-                    <span class="stat-value" data-val="6">0</span>
-                    <span class="stat-label">Global Rank</span>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div class="glass-card" style="padding: 30px; text-align: center;">
+                    <span style="font-size: 3rem; font-weight: 800; color: var(--accent-teal);" data-val="1">0</span>
+                    <span class="section-tag" style="margin-top: 10px; font-size: 0.6rem;">ACL Publication</span>
+                </div>
+                <div class="glass-card" style="padding: 30px; text-align: center;">
+                    <span style="font-size: 3rem; font-weight: 800; color: var(--accent-teal);" data-val="6">0</span>
+                    <span class="section-tag" style="margin-top: 10px; font-size: 0.6rem;">Global Rank</span>
                 </div>
             </div>
         </div>
     </section>
 
     <section id="research" class="container reveal">
-        <div class="hero-tagline">02 — Research</div>
-        <div class="project-card" style="border-color: var(--accent-gold); background: linear-gradient(135deg, rgba(245, 200, 66, 0.05) 0%, transparent 100%);">
-            <span class="project-meta" style="color: var(--accent-gold);">★ SemEval-2026 · ACL Anthology · Camera-Ready</span>
-            <h3 style="font-size: 2.2rem;">Label-Wise Optimization with Adaptive Focal Loss for Polarization Identification</h3>
-            <p style="opacity: 0.7; margin-bottom: 30px;">Ranked 6th in the Hausa track and 15th in the English track globally. Developed a multilingual NLP system for fine-grained identification of polarization manifestations.</p>
-            <div class="project-tags">
-                <span class="tag">RoBERTa</span> <span class="tag">Afro-XLM-R</span> <span class="tag">Focal Loss</span> <span class="tag">XAI</span>
+        <span class="section-tag">02 — Codex</span>
+        <div class="glass-card" style="border-color: var(--accent-gold); background: linear-gradient(135deg, rgba(245, 200, 66, 0.05) 0%, transparent 100%);">
+            <span class="section-tag" style="color: var(--accent-gold);">★ SemEval-2026 · ACL Anthology · Camera-Ready</span>
+            <h3 style="font-family: var(--font-display); font-size: 2.5rem; margin-bottom: 25px;">Label-Wise Optimization with Adaptive Focal Loss for Polarization Identification</h3>
+            <p style="font-size: 1.1rem; opacity: 0.7; margin-bottom: 30px;">
+                My research addressed the critical challenge of fine-grained polarization manifestations in social media. By developing a One-vs-Rest framework with transformer-based encoders (RoBERTa, Afro-XLM-R) and per-label threshold optimization, we achieved <b>Global Rank 6th</b> in the Hausa track.
+            </p>
+            <div class="repo-tags">
+                <span class="tag-pill">RoBERTa</span> <span class="tag-pill">Focal Loss</span> <span class="tag-pill">Multilingual NLP</span> <span class="tag-pill">XAI</span>
             </div>
         </div>
-        <div class="project-card" style="margin-top: 30px; border-style: dashed;">
-            <span class="project-meta">🔬 Ongoing Research</span>
-            <h3>Probabilistic Forecasting with Explainable Uncertainty Attribution</h3>
-            <p style="opacity: 0.7;">Jointly modeling energy consumption and production with calibrated intervals using Conformal Prediction and SHAP.</p>
+
+        <div class="glass-card" style="margin-top: 30px; border-style: dashed;">
+            <span class="section-tag">🔬 Current Focus · AIMS 2026</span>
+            <h3>Forecasting with Explainable Uncertainty</h3>
+            <p style="opacity: 0.7;">Jointly modeling electricity consumption and Solar PV production using Conformal Prediction and SHAP for attribution. Transforming raw intervals into operational intelligence.</p>
         </div>
     </section>
 
-    <section id="projects" class="container reveal">
-        <div class="hero-tagline">03 — Projects</div>
-        <div class="project-grid">
-            <div class="project-card">
-                <span class="project-meta">Personal · Dec 2025</span>
-                <h3>Agentic AI Reporting</h3>
-                <p style="opacity: 0.7;">End-to-end agentic AI pipeline using LangChain + LLMs to automate generation of structured statistical reports.</p>
-                <div class="project-tags">
-                    <span class="tag">LangChain</span> <span class="tag">LLMs</span> <span class="tag">Streamlit</span>
+    <section id="forge" class="container reveal">
+        <span class="section-tag">03 — The Forge</span>
+        <h2 style="font-family: var(--font-display); font-size: 3rem; margin-bottom: 40px;">GitHub Ecosystem [84 Repositories]</h2>
+        
+        <div class="forge-grid">
+            <!-- Major Category: NLP & Semantics -->
+            <div class="repo-card">
+                <span class="section-tag" style="font-size: 0.6rem;">High Impact Research</span>
+                <a href="https://github.com/TIAO-Eliasse/nlp_project" target="_blank" class="repo-title">DeepSemantics / SemEval</a>
+                <p style="opacity: 0.6; font-size: 0.9rem;">The complete implementation of our transformer-based NLP system for polarization detection. Focused on scalability and focal loss optimization.</p>
+                <div class="repo-tags">
+                    <span class="tag-pill">Transformers</span> <span class="tag-pill">PyTorch</span> <span class="tag-pill">NLP</span>
                 </div>
             </div>
-            <div class="project-card">
-                <span class="project-meta">Industry Partnership</span>
-                <h3>ATM Predictive Maintenance</h3>
-                <p style="opacity: 0.7;">ML framework to anticipate hardware failures in real-time for Afriland First Bank using LSTM and XGBoost.</p>
-                <div class="project-tags">
-                    <span class="tag">XGBoost</span> <span class="tag">LSTM</span> <span class="tag">Python</span>
+
+            <!-- Major Category: Agentic AI -->
+            <div class="repo-card">
+                <span class="section-tag" style="font-size: 0.6rem;">LLM Architecture</span>
+                <a href="https://github.com/TIAO-Eliasse/ai-statistical-reporter" target="_blank" class="repo-title">Agentic AI Reporter</a>
+                <p style="opacity: 0.6; font-size: 0.9rem;">An end-to-end agentic pipeline using LangChain. Automates the generation of professional statistical reports from raw sensor and economic data.</p>
+                <div class="repo-tags">
+                    <span class="tag-pill">LangChain</span> <span class="tag-pill">LLMs</span> <span class="tag-pill">Prompt Engineering</span>
+                </div>
+            </div>
+
+            <!-- Major Category: Scale & Systems -->
+            <div class="repo-card">
+                <span class="section-tag" style="font-size: 0.6rem;">System Engineering</span>
+                <a href="https://github.com/TIAO-Eliasse/Machine-learning-at-scale" target="_blank" class="repo-title">ML at Scale Matrix</a>
+                <p style="opacity: 0.6; font-size: 0.9rem;">Large-scale recommendation systems and distributed ML implementations. Engineered for high-throughput environments.</p>
+                <div class="repo-tags">
+                    <span class="tag-pill">Matrix Factorization</span> <span class="tag-pill">Scalability</span> <span class="tag-pill">Distributed ML</span>
+                </div>
+            </div>
+
+            <!-- Major Category: Economic Forecasting -->
+            <div class="repo-card">
+                <span class="section-tag" style="font-size: 0.6rem;">Statistical Engineering</span>
+                <a href="https://github.com/TIAO-Eliasse/PFA2025" target="_blank" class="repo-title">SME Survival Analytics</a>
+                <p style="opacity: 0.6; font-size: 0.9rem;">My engineering thesis project. Predicting SME failure in Cameroon using Survival Forests and XGBoost with SHAP-based credit scoring.</p>
+                <div class="repo-tags">
+                    <span class="tag-pill">XGBoost</span> <span class="tag-pill">Survival Analysis</span> <span class="tag-pill">Credit Scoring</span>
                 </div>
             </div>
         </div>
+
+        <div style="margin-top: 40px; text-align: center;">
+            <p style="opacity: 0.5; font-size: 0.8rem; margin-bottom: 20px;">+80 other repositories covering Financial Simulation, Management Systems, and Statistical Modeling.</p>
+            <a href="https://github.com/TIAO-Eliasse" target="_blank" class="btn" style="border: 1px solid var(--accent-blue); color: var(--accent-blue);">Browse the Complete Ecosystem ↗</a>
+        </div>
     </section>
 
-    <section id="skills" class="container reveal">
-        <div class="hero-tagline">04 — Matrix</div>
-        <div class="skill-grid">
+    <section id="matrix" class="container reveal">
+        <span class="section-tag">04 — Matrix</span>
+        <div class="skills-matrix">
             <div class="skill-item">
-                <div class="ring-container">
-                    <svg class="ring-svg" width="100" height="100"><circle class="ring-bg" cx="50" cy="50" r="45"/><circle class="ring-fill" cx="50" cy="50" r="45" data-pct="92"/></svg>
-                    <div class="ring-text">92%</div>
-                </div>
-                <span style="font-size: 0.8rem; font-weight: 600; opacity: 0.7;">Explainable AI</span>
-            </div>
-            <div class="skill-item">
-                <div class="ring-container">
-                    <svg class="ring-svg" width="100" height="100"><circle class="ring-bg" cx="50" cy="50" r="45"/><circle class="ring-fill" cx="50" cy="50" r="45" data-pct="88"/></svg>
-                    <div class="ring-text">88%</div>
-                </div>
-                <span style="font-size: 0.8rem; font-weight: 600; opacity: 0.7;">NLP / LLMs</span>
-            </div>
-            <div class="skill-item">
-                <div class="ring-container">
-                    <svg class="ring-svg" width="100" height="100"><circle class="ring-bg" cx="50" cy="50" r="45"/><circle class="ring-fill" cx="50" cy="50" r="45" data-pct="85"/></svg>
-                    <div class="ring-text">85%</div>
-                </div>
-                <span style="font-size: 0.8rem; font-weight: 600; opacity: 0.7;">Deep Learning</span>
-            </div>
-            <div class="skill-item">
-                <div class="ring-container">
-                    <svg class="ring-svg" width="100" height="100"><circle class="ring-bg" cx="50" cy="50" r="45"/><circle class="ring-fill" cx="50" cy="50" r="45" data-pct="95"/></svg>
+                <div class="ring-wrap">
+                    <svg class="ring-svg" width="120" height="120"><circle class="ring-bg" cx="60" cy="60" r="45"/><circle class="ring-fill" cx="60" cy="60" r="45" data-pct="95"/></svg>
                     <div class="ring-text">95%</div>
                 </div>
-                <span style="font-size: 0.8rem; font-weight: 600; opacity: 0.7;">Python / R</span>
+                <span class="section-tag" style="font-size: 0.6rem;">Python / R</span>
+            </div>
+            <div class="skill-item">
+                <div class="ring-wrap">
+                    <svg class="ring-svg" width="120" height="120"><circle class="ring-bg" cx="60" cy="60" r="45"/><circle class="ring-fill" cx="60" cy="60" r="45" data-pct="92"/></svg>
+                    <div class="ring-text">92%</div>
+                </div>
+                <span class="section-tag" style="font-size: 0.6rem;">Explainable AI</span>
+            </div>
+            <div class="skill-item">
+                <div class="ring-wrap">
+                    <svg class="ring-svg" width="120" height="120"><circle class="ring-bg" cx="60" cy="60" r="45"/><circle class="ring-fill" cx="60" cy="60" r="45" data-pct="88"/></svg>
+                    <div class="ring-text">88%</div>
+                </div>
+                <span class="section-tag" style="font-size: 0.6rem;">NLP & LLMs</span>
+            </div>
+            <div class="skill-item">
+                <div class="ring-wrap">
+                    <svg class="ring-svg" width="120" height="120"><circle class="ring-bg" cx="60" cy="60" r="45"/><circle class="ring-fill" cx="60" cy="60" r="45" data-pct="85"/></svg>
+                    <div class="ring-text">85%</div>
+                </div>
+                <span class="section-tag" style="font-size: 0.6rem;">Deep Learning</span>
             </div>
         </div>
     </section>
 
-    <footer class="container" style="padding: 100px 0 50px; text-align: center; border-top: 1px solid var(--surface-border); opacity: 0.4; font-size: 0.8rem;">
-        © 2026 Eliasse TIAO · Neural Precision Portfolio · Cape Town
+    <section id="contact" class="container reveal">
+        <span class="section-tag">05 — Uplink</span>
+        <h2 style="font-family: var(--font-display); font-size: 4rem; margin-bottom: 40px;">Ready for the Next Giant Leap.</h2>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 100px;">
+            <div>
+                <p style="font-size: 1.5rem; font-weight: 300; opacity: 0.7;">I am currently seeking Research Internships, PhD opportunities, and collaborations that push the boundaries of Trustworthy Intelligence.</p>
+                <div style="margin-top: 50px;">
+                    <a href="mailto:eliasse@aims.ac.za" style="font-size: 2rem; color: var(--accent-blue); text-decoration: none; font-weight: 700;">eliasse@aims.ac.za</a>
+                </div>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 20px;">
+                <a href="https://linkedin.com/in/eliasse-tiao" target="_blank" class="glass-card" style="padding: 20px;">LinkedIn [Professional Network]</a>
+                <a href="https://github.com/TIAO-Eliasse" target="_blank" class="glass-card" style="padding: 20px;">GitHub [Code Ecosystem]</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>© 2026 Eliasse TIAO · Google DeepMind Scholar · AIMS South Africa</p>
+            <p style="font-family: var(--font-code); font-size: 0.7rem; margin-top: 10px;">LATENCY: 12ms | UPTIME: 99.9% | DESIGN: Neural Precision</p>
+        </div>
     </footer>
 
     <script>
-        // --- Cursor Glow ---
+        // --- Custom Cursor ---
         const glow = document.getElementById('cursor-glow');
         const dot = document.getElementById('cursor-dot');
         window.addEventListener('mousemove', (e) => {
-            glow.style.left = e.clientX + 'px';
-            glow.style.top = e.clientY + 'px';
-            dot.style.left = e.clientX + 'px';
-            dot.style.top = e.clientY + 'px';
+            glow.style.left = e.clientX + 'px'; glow.style.top = e.clientY + 'px';
+            dot.style.left = e.clientX + 'px'; dot.style.top = e.clientY + 'px';
         });
 
-        // --- Neural Canvas ---
+        // --- Neural Net ---
         const canvas = document.getElementById('neural-canvas');
         const ctx = canvas.getContext('2d');
         let nodes = [];
@@ -650,18 +369,16 @@
 
         class Node {
             constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.vx = (Math.random() - 0.5) * 0.4;
-                this.vy = (Math.random() - 0.5) * 0.4;
+                this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height;
+                this.vx = (Math.random() - 0.5) * 0.3; this.vy = (Math.random() - 0.5) * 0.3;
             }
             update() {
                 this.x += this.vx; this.y += this.vy;
-                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
-                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+                if(this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                if(this.y < 0 || this.y > canvas.height) this.vy *= -1;
             }
         }
-        for(let i=0; i<80; i++) nodes.push(new Node());
+        for(let i=0; i<70; i++) nodes.push(new Node());
 
         function animate() {
             ctx.clearRect(0,0,canvas.width, canvas.height);
@@ -669,11 +386,10 @@
                 n.update();
                 nodes.slice(i+1).forEach(m => {
                     const d = Math.hypot(n.x - m.x, n.y - m.y);
-                    if (d < 150) {
-                        ctx.beginPath();
-                        ctx.moveTo(n.x, n.y); ctx.lineTo(m.x, m.y);
-                        ctx.strokeStyle = `rgba(0, 212, 170, ${0.2 * (1 - d/150)})`;
-                        ctx.stroke();
+                    if(d < 180) {
+                        ctx.beginPath(); ctx.moveTo(n.x, n.y); ctx.lineTo(m.x, m.y);
+                        ctx.strokeStyle = `rgba(0, 212, 170, ${0.15 * (1 - d/180)})`;
+                        ctx.lineWidth = 0.5; ctx.stroke();
                     }
                 });
             });
@@ -682,42 +398,41 @@
         animate();
 
         // --- Typewriter ---
-        const subs = ["AI Researcher", "XAI & Explainability", "NLP & LLMs", "DeepMind Scholar"];
+        const subs = ["Strategic AI Researcher", "XAI & Explainability", "NLP Specialist", "Probabilistic Forecaster"];
         let sIdx = 0, cIdx = 0, del = false;
         function type() {
             const cur = subs[sIdx];
             document.getElementById('typewriter').textContent = del ? cur.slice(0, cIdx--) : cur.slice(0, cIdx++);
-            if (!del && cIdx > cur.length) { del = true; setTimeout(type, 2000); }
-            else if (del && cIdx < 0) { del = false; sIdx = (sIdx + 1) % subs.length; setTimeout(type, 500); }
-            else { setTimeout(type, del ? 50 : 100); }
+            if(!del && cIdx > cur.length) { del = true; setTimeout(type, 2000); }
+            else if(del && cIdx < 0) { del = false; sIdx = (sIdx + 1) % subs.length; setTimeout(type, 500); }
+            else setTimeout(type, del ? 40 : 80);
         }
         type();
 
-        // --- Reveal & Counters ---
+        // --- Reveal ---
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(e => {
-                if (e.isIntersecting) {
+                if(e.isIntersecting) {
                     e.target.classList.add('active');
-                    e.target.querySelectorAll('.stat-value').forEach(v => {
-                        const target = +v.getAttribute('data-val');
-                        let curr = 0;
-                        const t = setInterval(() => {
-                            curr += Math.ceil(target/20);
-                            if (curr >= target) { v.textContent = target + (target === 6 ? 'th' : ''); clearInterval(t); }
-                            else v.textContent = curr;
-                        }, 50);
-                    });
                     e.target.querySelectorAll('.ring-fill').forEach(r => {
                         const pct = +r.getAttribute('data-pct');
                         r.style.strokeDashoffset = 283 - (283 * pct / 100);
                     });
+                    e.target.querySelectorAll('[data-val]').forEach(v => {
+                        const target = +v.getAttribute('data-val');
+                        let curr = 0; const t = setInterval(() => {
+                            curr += Math.ceil(target/30);
+                            if(curr >= target) { v.textContent = target + (target === 6 ? 'th' : '+'); clearInterval(t); }
+                            else v.textContent = curr;
+                        }, 40);
+                    });
                 }
             });
-        }, { threshold: 0.2 });
+        }, { threshold: 0.15 });
         document.querySelectorAll('.reveal').forEach(r => observer.observe(r));
 
         window.addEventListener('scroll', () => {
-            document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+            document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 80);
         });
     </script>
 </body>
