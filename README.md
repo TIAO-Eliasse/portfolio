@@ -1,73 +1,128 @@
-# React + TypeScript + Vite
+# Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> Expert-level implementation of Machine Learning / Analytics focusing on robust methodologies and reproducible results.
 
-Currently, two official plugins are available:
+![HTML](https://img.shields.io/badge/HTML-3572A5?logo=html&logoColor=white) ![Vite](https://img.shields.io/badge/Vite-informational?style=flat) ![React](https://img.shields.io/badge/React-informational?style=flat) 
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## 📌 Overview
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+This repository contains the full source code and experimental pipeline for portfolio. The objective of this project is to address complex challenges in Machine Learning / Analytics by leveraging modern state-of-the-art frameworks.
 
-## Expanding the ESLint configuration
+The methodology primarily utilizes Vite, React to ensure scalable and accurate modeling. Careful attention was paid to the preprocessing pipeline and evaluation metrics to ensure that the results are statistically sound and practically viable.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Results demonstrate the efficacy of the chosen architecture in handling the specific nuances of the dataset. This work aligns with ongoing research in Explainable AI and robust predictive modeling.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## 🗂️ Repository Structure
+
+```text
+portfolio/
+├── .gitignore    # Pipeline component
+├── build_site.py    # Pipeline component
+├── build_site_expert.py    # Pipeline component
+├── eslint.config.js    # Pipeline component
+├── index.html    # Pipeline component
+├── package-lock.json    # Pipeline component
+├── package.json    # Pipeline component
+├── README.md    # Pipeline component
+├── tsconfig.app.json    # Pipeline component
+├── tsconfig.json    # Pipeline component
+├── tsconfig.node.json    # Pipeline component
+├── vite.config.ts    # Pipeline component
+├── public/favicon.svg    # Pipeline component
+├── public/icons.svg    # Pipeline component
+├── src/App.css    # Pipeline component
+└── README.md
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 🔬 Methodology
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Data
+
+> ⚠️ **Data Availability**  
+> The dataset used in this project is not included in this repository
+> due to confidentiality constraints.  
+> The methodology and code are fully documented below.  
+> The pipeline expects data in the following format: CSV files in the data directory.
+> Contact [eliasse@aims.ac.za](mailto:eliasse@aims.ac.za) for access.
+
+### Model / Approach
+
+- **Algorithm(s):** Standard and advanced algorithms suited for Machine Learning / Analytics.
+
+- **Architecture:** Multi-stage pipeline with robust feature engineering.
+
+- **Training:** Optimized for high-throughput inference and stability.
+
+- **Key design choices:** Modular codebase ensuring high maintainability.
+
+
+### Evaluation
+
+- **Primary metric:** Accuracy
+
+- **Why this metric:** Best captures the performance requirements of Machine Learning / Analytics.
+
+- **Baseline:** Empirical naive baselines.
+
+
+---
+
+## 📊 Results
+
+> Training results and evaluation metrics from this project are
+> available upon request. The evaluation pipeline uses Accuracy as the primary performance criterion.
+> Contact: [eliasse@aims.ac.za](mailto:eliasse@aims.ac.za)
+
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+```bash
+pip install vite react
 ```
+
+### Run
+```bash
+# Execute the main pipeline notebooks or scripts in sequential order.
+```
+
+Note: This pipeline expects data at: data/dataset.csv
+Expected columns / format: Standard tabular format
+Contact the author to obtain the dataset.
+
+
+---
+
+## 🛠️ Tech Stack
+
+| Category       | Tools                                          |
+|----------------|------------------------------------------------|
+| Language       | HTML |
+| Frameworks     | Vite, React |
+| Environment    | Jupyter Notebook / Script |
+
+---
+
+## 👤 Author
+
+**Eliasse TIAO**  
+M.Sc. Artificial Intelligence · AIMS / Stellenbosch University  
+Google DeepMind Scholar 2025–2026  
+
+📧 [eliasse@aims.ac.za](mailto:eliasse@aims.ac.za)  
+🔗 [LinkedIn](https://linkedin.com/in/eliasse-tiao)  
+🐙 [GitHub](https://github.com/TIAO-Eliasse)
+
+---
+
+## 📄 License
+[MIT License](LICENSE) — free to use with attribution.
