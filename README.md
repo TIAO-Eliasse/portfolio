@@ -1,19 +1,42 @@
-# Portfolio
+# 🌐 Personal Portfolio Website — Eliasse TIAO
 
-> Expert-level implementation of Machine Learning / Analytics focusing on robust methodologies and reproducible results.
+> Personal research portfolio of Eliasse TIAO — M.Sc. AI · Google DeepMind Scholar · AI Researcher at AIMS South Africa.
 
-![HTML](https://img.shields.io/badge/HTML-3572A5?logo=html&logoColor=white) ![Vite](https://img.shields.io/badge/Vite-informational?style=flat) ![React](https://img.shields.io/badge/React-informational?style=flat) 
+[![Live Site](https://img.shields.io/badge/🌐_Live_Site-tiao--eliasse.github.io-4f8ef7?style=flat)](https://tiao-eliasse.github.io/portfolio)
+![HTML](https://img.shields.io/badge/HTML5-E34C26?logo=html5&logoColor=white)
+![CSS](https://img.shields.io/badge/CSS3-563D7C?logo=css3&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F1E05A?logo=javascript&logoColor=black)
+![Status](https://img.shields.io/badge/Status-Live-brightgreen)
+![Zero Frameworks](https://img.shields.io/badge/Zero_Frameworks-Pure_Vanilla-00d4aa)
 
 ---
 
-## 📌 Overview
+## 🔗 Live Site
 
-This repository contains the full source code and experimental pipeline for portfolio. The objective of this project is to address complex challenges in Machine Learning / Analytics by leveraging modern state-of-the-art frameworks.
+**[https://tiao-eliasse.github.io/portfolio](https://tiao-eliasse.github.io/portfolio)**
 
-The methodology primarily utilizes Vite, React to ensure scalable and accurate modeling. Careful attention was paid to the preprocessing pipeline and evaluation metrics to ensure that the results are statistically sound and practically viable.
+---
 
-Results demonstrate the efficacy of the chosen architecture in handling the specific nuances of the dataset. This work aligns with ongoing research in Explainable AI and robust predictive modeling.
+## 📌 About
 
+This repository contains the source code for my personal research portfolio website.
+Built entirely with pure HTML, CSS, and vanilla JavaScript — zero external frameworks.
+
+The site showcases my research publications, GitHub projects, skills, and professional
+journey as an AI researcher specializing in Explainable AI, NLP, and Probabilistic
+Forecasting.
+
+---
+
+## ✨ Features
+
+- **Neural Network Canvas** — animated background built with Canvas API (70 nodes, signal pulses)
+- **12 Visual Effects** — custom cursor, glitch text, typewriter, 3D card tilt, magnetic buttons
+- **Live GitHub Integration** — fetches real-time repo stats via GitHub API
+- **5 Research Papers** — 1 published (ACL Anthology · SemEval-2026) + 4 under review (IJCAI 2026)
+- **84 GitHub Repositories** — live project cards with descriptions and stats
+- **Fully Responsive** — mobile-first design (375px → 1440px)
+- **Zero Frameworks** — pure HTML/CSS/JS, Lighthouse score 90+
 
 ---
 
@@ -21,108 +44,90 @@ Results demonstrate the efficacy of the chosen architecture in handling the spec
 
 ```text
 portfolio/
-├── .gitignore    # Pipeline component
-├── build_site.py    # Pipeline component
-├── build_site_expert.py    # Pipeline component
-├── eslint.config.js    # Pipeline component
-├── index.html    # Pipeline component
-├── package-lock.json    # Pipeline component
-├── package.json    # Pipeline component
-├── README.md    # Pipeline component
-├── tsconfig.app.json    # Pipeline component
-├── tsconfig.json    # Pipeline component
-├── tsconfig.node.json    # Pipeline component
-├── vite.config.ts    # Pipeline component
-├── public/favicon.svg    # Pipeline component
-├── public/icons.svg    # Pipeline component
-├── src/App.css    # Pipeline component
+├── index.html          # Complete single-file website (HTML + CSS + JS)
+├── build_site.py       # Python script used to generate the site
+├── package.json        # Project metadata
+├── vite.config.ts      # Build configuration
+├── public/
+│   ├── favicon.svg     # Site favicon
+│   └── icons.svg       # Icon assets
 └── README.md
 ```
 
 ---
 
-## 🔬 Methodology
+## 🔬 Sections
 
-### Data
-
-> ⚠️ **Data Availability**  
-> The dataset used in this project is not included in this repository
-> due to confidentiality constraints.  
-> The methodology and code are fully documented below.  
-> The pipeline expects data in the following format: CSV files in the data directory.
-> Contact [eliasse@aims.ac.za](mailto:eliasse@aims.ac.za) for access.
-
-### Model / Approach
-
-- **Algorithm(s):** Standard and advanced algorithms suited for Machine Learning / Analytics.
-
-- **Architecture:** Multi-stage pipeline with robust feature engineering.
-
-- **Training:** Optimized for high-throughput inference and stability.
-
-- **Key design choices:** Modular codebase ensuring high maintainability.
-
-
-### Evaluation
-
-- **Primary metric:** Accuracy
-
-- **Why this metric:** Best captures the performance requirements of Machine Learning / Analytics.
-
-- **Baseline:** Empirical naive baselines.
-
+| Section | Content |
+|---------|---------|
+| **Hero** | Neural canvas, typewriter animation, live clock GMT+2 |
+| **About** | Bio, live GitHub stats, availability pills |
+| **Research** | 1 published paper + 4 under review + 1 ongoing |
+| **Projects** | 84 GitHub repo cards with live API data |
+| **Skills** | SVG progress rings — AI/ML, Statistics, Tools |
+| **Experience** | Vertical timeline — 7 milestones |
+| **Honors** | 4 awards + Kaggle certifications |
+| **Contact** | mailto form with subject dropdown |
 
 ---
 
-## 📊 Results
+## 📄 Research Highlights
 
-> Training results and evaluation metrics from this project are
-> available upon request. The evaluation pipeline uses Accuracy as the primary performance criterion.
-> Contact: [eliasse@aims.ac.za](mailto:eliasse@aims.ac.za)
+**Published (2026):**
+> *Label-Wise Optimization with Adaptive Focal Loss for Polarization Manifestation Identification*
+> SemEval-2026 · ACL Anthology · **Ranked 6th / Hausa Track**
 
-
----
-
-## 🚀 Getting Started
-
-### Prerequisites
-```bash
-pip install vite react
-```
-
-### Run
-```bash
-# Execute the main pipeline notebooks or scripts in sequential order.
-```
-
-Note: This pipeline expects data at: data/dataset.csv
-Expected columns / format: Standard tabular format
-Contact the author to obtain the dataset.
-
+**Under Review — IndabaX / IJCAI 2026:**
+- *Data-Driven Lifelines: AI & Econometric Early-Warning System for SME Survival* — CatBoost AUC=0.884
+- *Optimizing Human-AI Collaboration for SME Survival* — S3 framework, -13% costs
+- *FloodTriage: Decision-Theoretic Deferral for Streamflow Forecasting* — KGE 0.720→0.784
+- *Optimiser Geometry and Catastrophic Forgetting* — Sparse Adam outperforms Adam on Cassava dataset
 
 ---
 
 ## 🛠️ Tech Stack
 
-| Category       | Tools                                          |
-|----------------|------------------------------------------------|
-| Language       | HTML |
-| Frameworks     | Vite, React |
-| Environment    | Jupyter Notebook / Script |
+| Category | Details |
+|----------|---------|
+| Languages | HTML5 · CSS3 · Vanilla JavaScript |
+| Fonts | Space Grotesk · Inter · JetBrains Mono (Google Fonts) |
+| APIs | GitHub REST API (live repo stats) |
+| Animations | Canvas API · CSS Animations · IntersectionObserver |
+| Hosting | GitHub Pages |
+| Build | Single-file — no compilation needed |
+
+---
+
+## 🚀 Run Locally
+
+```bash
+# Clone the repo
+git clone https://github.com/TIAO-Eliasse/portfolio.git
+cd portfolio
+
+# Just open index.html in your browser — no build step needed
+open index.html
+
+# Or serve locally
+python -m http.server 8000
+# Then visit http://localhost:8000
+```
 
 ---
 
 ## 👤 Author
 
-**Eliasse TIAO**  
-M.Sc. Artificial Intelligence · AIMS / Stellenbosch University  
-Google DeepMind Scholar 2025–2026  
+**Eliasse TIAO**
+M.Sc. Artificial Intelligence · AIMS / Stellenbosch University
+Google DeepMind Scholar 2025–2026
 
-📧 [eliasse@aims.ac.za](mailto:eliasse@aims.ac.za)  
-🔗 [LinkedIn](https://linkedin.com/in/eliasse-tiao)  
+📧 [eliasse@aims.ac.za](mailto:eliasse@aims.ac.za)
+🔗 [LinkedIn](https://linkedin.com/in/eliasse-tiao)
 🐙 [GitHub](https://github.com/TIAO-Eliasse)
+🌐 [Portfolio](https://tiao-eliasse.github.io/portfolio)
 
 ---
 
 ## 📄 License
+
 [MIT License](LICENSE) — free to use with attribution.
