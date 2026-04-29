@@ -1,42 +1,538 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eliasse TIAO — AI Researcher · Google DeepMind Scholar</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=JetBrains+Mono&family=Space+Grotesk:wght@300;500;700;800&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-black: #080810; --text-white: #ffffff; --accent-blue: #4f8ef7; --accent-teal: #00d4aa; --accent-gold: #f5c842;
-            --surface: rgba(255,255,255,0.04); --surface-border: rgba(255,255,255,0.1);
-            --font-display: 'Space Grotesk', sans-serif; --font-body: 'Inter', sans-serif; --font-code: 'JetBrains Mono', monospace;
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
-        body { background: var(--bg-black); color: var(--text-white); font-family: var(--font-body); overflow-x: hidden; }
-        #cursor-dot { position: fixed; width: 8px; height: 8px; background: var(--accent-blue); border-radius: 50%; pointer-events: none; z-index: 10000; transform: translate(-50%, -50%); }
-        #cursor-glow { position: fixed; width: 200px; height: 200px; background: radial-gradient(circle, rgba(79,142,247,0.15) 0%, transparent 70%); pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); }
-        nav { position: fixed; top: 0; width: 100%; padding: 30px 60px; z-index: 1000; display: flex; justify-content: space-between; align-items: center; backdrop-filter: blur(20px); border-bottom: 1px solid var(--surface-border); }
-        .container { max-width: 1200px; margin: 0 auto; padding: 120px 40px; }
-        #hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; position: relative; }
-        .hero-title { font-family: var(--font-display); font-size: clamp(4rem, 10vw, 8.5rem); font-weight: 800; line-height: 0.9; margin: 20px 0; }
-        .project-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 30px; }
-        .project-card { background: var(--surface); border: 1px solid var(--surface-border); padding: 30px; border-radius: 12px; transition: 0.5s; }
-        .project-card.featured { grid-column: 1 / -1; border-color: var(--accent-gold); }
-        .tag { font-family: var(--font-code); font-size: 0.7rem; color: var(--accent-blue); margin-right: 8px; }
-        .reveal { opacity: 0; transform: translateY(30px); transition: 0.8s; }
-        .reveal.visible { opacity: 1; transform: translateY(0); }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eliasse TIAO — AI Researcher · Google DeepMind Scholar · AIMS</title>
+<meta name="description" content="Eliasse TIAO — M.Sc. AI at AIMS Stellenbosch, Google DeepMind Scholar. Research in XAI, NLP, Probabilistic Forecasting. SemEval-2026 author. Cape Town, South Africa.">
+<meta name="keywords" content="Eliasse TIAO, AI researcher Africa, Google DeepMind scholar AIMS, XAI explainable AI, NLP researcher, machine learning Cameroon, SemEval 2026">
+<meta property="og:title" content="Eliasse TIAO — AI Researcher">
+<meta property="og:description" content="Google DeepMind Scholar · M.Sc. AI · AIMS Stellenbosch · XAI · NLP · Probabilistic Forecasting">
+<meta property="og:type" content="website">
+<meta name="author" content="Eliasse TIAO">
+<meta name="robots" content="index, follow">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Eliasse TIAO","jobTitle":"AI Researcher · Google DeepMind Scholar","affiliation":{"@type":"Organization","name":"AIMS / Stellenbosch University"},"email":"eliasse@aims.ac.za","url":"https://github.com/TIAO-Eliasse","sameAs":["https://github.com/TIAO-Eliasse","https://linkedin.com/in/eliasse-tiao"],"knowsAbout":["Explainable AI","NLP","Machine Learning","Probabilistic Forecasting","Statistics","Causal Inference"]}</script>
+<style>
+:root {
+  --bg: #080810; --white: #ffffff; --blue: #4f8ef7; --teal: #00d4aa; --gold: #f5c842;
+  --surface: rgba(255,255,255,0.04); --border: rgba(255,255,255,0.1);
+  --display: 'Space Grotesk', sans-serif; --body: 'Inter', sans-serif; --mono: 'JetBrains Mono', monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--white);font-family:var(--body);overflow-x:hidden;cursor:none}
+a{color:inherit;text-decoration:none}
+/* CURSOR */
+#cur{position:fixed;width:8px;height:8px;background:var(--blue);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s;mix-blend-mode:difference}
+#glow{position:fixed;width:200px;height:200px;background:radial-gradient(circle,rgba(79,142,247,.15) 0%,transparent 70%);pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:opacity .3s}
+@media(pointer:coarse){#cur,#glow{display:none}body{cursor:auto}}
+/* LOADING */
+#loading{position:fixed;inset:0;background:var(--bg);z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .6s}
+#loading.done{opacity:0;pointer-events:none}
+.load-mono{font-family:var(--display);font-size:4rem;font-weight:800;color:var(--white);letter-spacing:-.04em}
+.load-bar-wrap{width:200px;height:2px;background:rgba(255,255,255,.1);margin-top:2rem;border-radius:2px;overflow:hidden}
+.load-bar{height:100%;width:0;background:linear-gradient(90deg,var(--blue),var(--teal));transition:width 1.8s cubic-bezier(.4,0,.2,1)}
+/* CANVAS */
+#neural-canvas{position:fixed;inset:0;z-index:0;opacity:.6}
+/* NAV */
+nav{position:fixed;top:0;width:100%;z-index:1000;padding:0 60px;height:70px;display:flex;align-items:center;justify-content:space-between;transition:background .3s,border-color .3s;border-bottom:1px solid transparent}
+nav.scrolled{background:rgba(8,8,16,.8);backdrop-filter:blur(24px) saturate(180%);border-color:var(--border)}
+.nav-logo{font-family:var(--display);font-weight:800;font-size:1.3rem;color:var(--white)}
+.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{font-size:.85rem;color:rgba(255,255,255,.6);letter-spacing:.05em;text-transform:uppercase;transition:color .3s;position:relative;padding-bottom:4px}
+.nav-links a::after{content:'';position:absolute;bottom:0;left:0;width:0;height:1px;background:var(--teal);transition:width .3s}
+.nav-links a:hover,.nav-links a.active{color:var(--white)}
+.nav-links a:hover::after,.nav-links a.active::after{width:100%}
+/* SKIP LINK */
+.skip-link{position:absolute;top:-100px;left:1rem;background:var(--blue);color:#fff;padding:.5rem 1rem;z-index:100000;border-radius:4px;transition:top .3s}
+.skip-link:focus{top:1rem}
+/* HERO */
+#hero{height:100vh;display:flex;flex-direction:column;justify-content:center;position:relative;padding:0 60px;max-width:1200px;margin:0 auto}
+.hero-topbar{position:absolute;top:2rem;left:60px;right:60px;display:flex;justify-content:space-between;align-items:center;font-size:.8rem}
+.hero-status{display:flex;align-items:center;gap:.5rem;color:rgba(255,255,255,.7)}
+.status-dot{width:8px;height:8px;background:#22c55e;border-radius:50%;animation:pulse-green 2s infinite}
+@keyframes pulse-green{0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,.4)}50%{box-shadow:0 0 0 6px rgba(34,197,94,0)}}
+.hero-clock{color:rgba(255,255,255,.5);font-family:var(--mono);font-size:.75rem}
+.hero-label{font-family:var(--display);font-size:.75rem;color:var(--teal);letter-spacing:.2em;text-transform:uppercase;margin-bottom:1rem}
+.hero-name{font-family:var(--display);font-size:clamp(4rem,10vw,9rem);font-weight:800;line-height:.92;letter-spacing:-.04em;margin-bottom:1.5rem;position:relative;display:inline-block}
+.hero-name .letter{display:inline-block;opacity:0;transform:translateY(30px);transition:opacity .5s,transform .5s}
+.hero-name.glitch-active::before,.hero-name.glitch-active::after{content:attr(data-text);position:absolute;top:0;left:0;width:100%;height:100%}
+.hero-name.glitch-active::before{color:#ff0066;clip-path:inset(20% 0 60% 0);animation:glitch-a .3s steps(1) 2}
+.hero-name.glitch-active::after{color:#00ffff;clip-path:inset(60% 0 20% 0);animation:glitch-b .3s steps(1) 2}
+@keyframes glitch-a{0%{transform:translate(-3px)}50%{transform:translate(3px)}100%{transform:translate(0)}}
+@keyframes glitch-b{0%{transform:translate(3px)}50%{transform:translate(-3px)}100%{transform:translate(0)}}
+.hero-sub{font-size:1.1rem;color:rgba(255,255,255,.6);margin-bottom:.5rem;min-height:1.6em}
+.tw-cursor{color:var(--teal);animation:blink 1s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.hero-tagline{font-size:1.1rem;color:rgba(255,255,255,.55);margin-bottom:2.5rem;font-style:italic}
+.hero-cta{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:2rem}
+.btn{display:inline-flex;align-items:center;gap:.5rem;padding:.8rem 1.8rem;border-radius:6px;font-family:var(--display);font-weight:600;font-size:.9rem;transition:all .3s;position:relative;overflow:hidden}
+.btn-primary{background:var(--blue);color:#fff;border:none}
+.btn-primary:hover{background:#3a7de8;transform:translateY(-2px);box-shadow:0 8px 25px rgba(79,142,247,.4)}
+.btn-outline-teal{border:1px solid var(--teal);color:var(--teal);background:transparent}
+.btn-outline-teal:hover{background:rgba(0,212,170,.1);transform:translateY(-2px)}
+.btn-outline{border:1px solid rgba(255,255,255,.3);color:rgba(255,255,255,.8);background:transparent}
+.btn-outline:hover{border-color:var(--white);color:var(--white);transform:translateY(-2px)}
+.btn-text{color:rgba(255,255,255,.6);background:none;border:none;padding:.8rem 0;cursor:none}
+.btn-text:hover{color:var(--white)}
+.btn-text::after{content:'→';margin-left:.5rem;transition:margin-left .3s}
+.btn-text:hover::after{margin-left:1rem}
+.hero-social{display:flex;gap:1.5rem;margin-bottom:1rem}
+.social-link{font-family:var(--mono);font-size:.75rem;color:rgba(255,255,255,.5);display:flex;align-items:center;gap:.4rem;transition:color .3s;position:relative}
+.social-link::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1px;background:var(--blue);transition:width .3s}
+.social-link:hover{color:var(--white)}
+.social-link:hover::after{width:100%}
+.gh-badge{font-family:var(--mono);font-size:.75rem;color:rgba(255,255,255,.4)}
+.scroll-indicator{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.5rem;color:rgba(255,255,255,.3);font-size:.75rem;letter-spacing:.1em}
+.scroll-chevron{width:20px;height:20px;border-right:1px solid rgba(255,255,255,.3);border-bottom:1px solid rgba(255,255,255,.3);transform:rotate(45deg);animation:bounce .8s ease infinite alternate}
+@keyframes bounce{from{transform:rotate(45deg) translate(-3px,-3px)}to{transform:rotate(45deg) translate(3px,3px)}}
+/* SECTIONS COMMON */
+.section{position:relative;z-index:1;padding:120px 0}
+.container{max-width:1200px;margin:0 auto;padding:0 60px}
+.section-label{font-family:var(--mono);font-size:.75rem;color:var(--teal);letter-spacing:.2em;text-transform:uppercase;margin-bottom:1rem;opacity:.8}
+.section-title{font-family:var(--display);font-size:clamp(2.5rem,5vw,4rem);font-weight:800;line-height:1;letter-spacing:-.03em;margin-bottom:1rem}
+.section-title span{background:linear-gradient(135deg,var(--blue),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.title-line{width:60px;height:2px;background:linear-gradient(90deg,var(--blue),var(--teal));margin-bottom:3rem}
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(40px) scale(.98);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)}
+.reveal.visible{opacity:1;transform:translateY(0) scale(1)}
+.reveal:nth-child(1){transition-delay:0ms}
+.reveal:nth-child(2){transition-delay:100ms}
+.reveal:nth-child(3){transition-delay:200ms}
+.reveal:nth-child(4){transition-delay:300ms}
+/* ABOUT */
+#about .about-grid{display:grid;grid-template-columns:58% 42%;gap:4rem;align-items:start}
+.bio-text{font-size:1.05rem;line-height:1.8;color:rgba(255,255,255,.8);margin-bottom:1.5rem}
+.avail-pills{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:2rem}
+.pill{padding:.4rem 1rem;border:1px solid var(--border);border-radius:20px;font-size:.8rem;color:rgba(255,255,255,.7);background:var(--surface);transition:all .3s}
+.pill:hover{border-color:var(--teal);color:var(--teal)}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.5rem;transition:transform .3s,box-shadow .3s}
+.stat-card:hover{transform:translateY(-4px);box-shadow:0 20px 40px rgba(0,0,0,.3)}
+.stat-card.gold{border-color:rgba(245,200,66,.3)}
+.stat-card.blue{border-color:rgba(79,142,247,.3)}
+.stat-card.teal{border-color:rgba(0,212,170,.3)}
+.stat-card.grad{border:1px solid transparent;background:linear-gradient(var(--bg),var(--bg)) padding-box,linear-gradient(135deg,var(--blue),var(--teal)) border-box}
+.stat-num{font-family:var(--display);font-size:2.5rem;font-weight:800;line-height:1;margin-bottom:.3rem}
+.stat-num.gold-text{color:var(--gold)}
+.stat-num.blue-text{color:var(--blue)}
+.stat-num.teal-text{color:var(--teal)}
+.stat-label{font-size:.9rem;font-weight:600;margin-bottom:.2rem}
+.stat-sub{font-family:var(--mono);font-size:.7rem;color:rgba(255,255,255,.4)}
+.gh-activity{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;margin:1.5rem 0}
+.gh-mini{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:.8rem;text-align:center}
+.gh-mini-num{font-family:var(--display);font-size:1.4rem;font-weight:700;color:var(--teal)}
+.gh-mini-label{font-size:.7rem;color:rgba(255,255,255,.5);margin-top:.2rem}
+/* RESEARCH */
+.research-cards{display:flex;flex-direction:column;gap:2rem}
+.res-card{background:var(--surface);border-radius:16px;padding:2.5rem;transition:box-shadow .3s}
+.res-card.gold-card{border:1px solid rgba(245,200,66,.4)}
+.res-card.gold-card:hover{box-shadow:0 0 40px rgba(245,200,66,.1)}
+.res-card.teal-card{border:1px solid rgba(0,212,170,.3)}
+.res-card.teal-card:hover{box-shadow:0 0 40px rgba(0,212,170,.08)}
+.res-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.2rem;flex-wrap:wrap;gap:.5rem}
+.res-venue{font-family:var(--mono);font-size:.75rem;color:rgba(255,255,255,.5)}
+.badge{display:inline-block;padding:.3rem .8rem;border-radius:20px;font-size:.7rem;font-weight:700;font-family:var(--mono)}
+.badge-gold{background:rgba(245,200,66,.15);border:1px solid var(--gold);color:var(--gold)}
+
+.badge-review{background:rgba(255,107,107,.1);border:1px solid rgba(255,107,107,.4);color:#ff6b6b}
+.res-card.review-card{border-color:rgba(255,107,107,.2)}
+.res-card.review-card:hover{box-shadow:0 0 30px rgba(255,107,107,.08)}
+.badge-live{background:rgba(0,212,170,.1);border:1px solid var(--teal);color:var(--teal)}
+.live-dot{display:inline-block;width:6px;height:6px;background:var(--teal);border-radius:50%;margin-right:4px;animation:pulse-teal 1.5s infinite}
+@keyframes pulse-teal{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(1.3)}}
+.res-title{font-family:var(--display);font-size:1.3rem;font-weight:700;line-height:1.3;margin-bottom:.8rem}
+.res-authors{font-family:var(--mono);font-size:.8rem;color:var(--teal);margin-bottom:1rem}
+.res-abstract{font-size:.95rem;color:rgba(255,255,255,.65);font-style:italic;line-height:1.7;margin-bottom:1.5rem;border-left:2px solid var(--gold);padding-left:1rem}
+.res-results{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.5rem 0;background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:8px;padding:1.2rem}
+.res-result-item{text-align:center}
+.res-result-val{font-family:var(--display);font-size:1.5rem;font-weight:800;color:var(--gold)}
+.res-result-label{font-size:.75rem;color:rgba(255,255,255,.5);margin-top:.2rem}
+.nb-block{background:rgba(0,0,0,.4);border:1px solid var(--border);border-radius:8px;padding:1.2rem;font-family:var(--mono);font-size:.8rem;margin:1.5rem 0}
+.nb-header{color:var(--teal);margin-bottom:.8rem;font-size:.75rem}
+.nb-item{color:rgba(255,255,255,.7);margin:.4rem 0;padding-left:1rem}
+.nb-item span{color:rgba(255,255,255,.4)}
+.methods-tags{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0}
+.m-tag{background:rgba(79,142,247,.1);border:1px solid rgba(79,142,247,.3);color:var(--blue);padding:.3rem .7rem;border-radius:4px;font-family:var(--mono);font-size:.7rem}
+.res-btns{display:flex;gap:1rem;margin-top:1.5rem;flex-wrap:wrap}
+.methods-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.8rem;margin:1.2rem 0}
+.method-item{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:6px;padding:.8rem;font-size:.85rem}
+.method-item strong{display:block;color:var(--teal);font-family:var(--mono);font-size:.75rem;margin-bottom:.2rem}
+.progress-wrap{margin-top:1.5rem}
+.progress-label{display:flex;justify-content:space-between;font-size:.8rem;color:rgba(255,255,255,.5);margin-bottom:.5rem}
+.progress-bar{height:4px;background:rgba(255,255,255,.1);border-radius:2px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--teal));border-radius:2px;transition:width 1.5s cubic-bezier(.4,0,.2,1)}
+/* PROJECTS */
+.projects-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:3rem;flex-wrap:wrap;gap:1rem}
+.gh-live-bar{font-family:var(--mono);font-size:.75rem;color:rgba(255,255,255,.4)}
+.project-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1.5rem}
+.project-card{background:var(--surface);border:1px solid var(--border);padding:1.8rem;border-radius:12px;transition:transform .4s,box-shadow .4s,border-color .3s;position:relative;overflow:hidden}
+.project-card::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(79,142,247,.05) 0%,transparent 60%);opacity:0;transition:opacity .3s;pointer-events:none}
+.project-card:hover::before{opacity:1}
+.project-card:hover{transform:translateY(-4px);box-shadow:0 20px 40px rgba(0,0,0,.3)}
+.project-card.featured{grid-column:1/-1;border-color:rgba(245,200,66,.4);position:relative}
+.project-card.featured:hover{box-shadow:0 0 60px rgba(245,200,66,.15)}
+.featured-badge{display:inline-block;background:rgba(245,200,66,.15);border:1px solid var(--gold);color:var(--gold);padding:.3rem .8rem;border-radius:4px;font-family:var(--mono);font-size:.7rem;margin-bottom:1rem}
+.card-header{display:flex;align-items:center;gap:1rem;margin-bottom:1rem;font-family:var(--mono);font-size:.72rem;color:rgba(255,255,255,.4);flex-wrap:wrap}
+.card-title{font-family:var(--display);font-size:1.1rem;font-weight:700;margin-bottom:.5rem;color:var(--white)}
+.card-subtitle{color:var(--teal);font-family:var(--mono);font-size:.75rem;margin-bottom:.8rem}
+.card-desc{font-size:.9rem;color:rgba(255,255,255,.65);line-height:1.6;margin-bottom:1rem}
+.card-topics{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1rem}
+.tag{font-family:var(--mono);font-size:.65rem;color:var(--blue);background:rgba(79,142,247,.1);border:1px solid rgba(79,142,247,.2);padding:.2rem .5rem;border-radius:3px}
+.card-btn{display:inline-flex;align-items:center;gap:.4rem;color:var(--white);font-size:.8rem;font-family:var(--mono);border:1px solid var(--border);padding:.5rem 1rem;border-radius:6px;transition:all .3s}
+.card-btn:hover{border-color:var(--blue);color:var(--blue);transform:translateX(3px)}
+/* TERMINAL (nlp card) */
+.terminal{position:absolute;bottom:0;left:0;right:0;background:#060610;border-top:1px solid rgba(0,212,170,.3);padding:1rem 1.5rem;font-family:var(--mono);font-size:.75rem;color:var(--teal);max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.4,0,.2,1)}
+.project-card:hover .terminal{max-height:200px}
+.terminal-line{opacity:0;transform:translateY(5px);transition:opacity .2s,transform .2s}
+.terminal-line.show{opacity:1;transform:translateY(0)}
+/* SKILLS */
+.skills-tabs{display:flex;gap:.5rem;margin-bottom:3rem;border-bottom:1px solid var(--border);padding-bottom:0}
+.tab-btn{font-family:var(--display);font-size:.85rem;padding:.8rem 1.5rem;background:none;border:none;color:rgba(255,255,255,.5);cursor:none;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .3s}
+.tab-btn.active{color:var(--white);border-bottom-color:var(--blue)}
+.tab-btn:hover{color:rgba(255,255,255,.8)}
+.tab-pane{display:none}
+.tab-pane.active{display:block}
+.rings-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem}
+.ring-item{display:flex;flex-direction:column;align-items:center;gap:.8rem}
+.ring-wrap{position:relative;width:80px;height:80px}
+.ring-svg{transform:rotate(-90deg)}
+.ring-bg{fill:none;stroke:rgba(255,255,255,.08);stroke-width:4}
+.ring-prog{fill:none;stroke-width:4;stroke-linecap:round;stroke-dasharray:201 201;stroke-dashoffset:201;transition:stroke-dashoffset 1.6s cubic-bezier(.4,0,.2,1)}
+.ring-pct{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:.85rem;font-weight:700}
+.ring-label{font-size:.8rem;text-align:center;color:rgba(255,255,255,.7);max-width:120px}
+.skill-bars{margin-top:2rem}
+.skill-bar-item{display:flex;align-items:center;gap:1rem;margin-bottom:1rem}
+.skill-bar-label{font-size:.85rem;min-width:180px;color:rgba(255,255,255,.7)}
+.skill-bar-track{flex:1;height:4px;background:rgba(255,255,255,.08);border-radius:2px}
+.skill-bar-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--teal));border-radius:2px;width:0;transition:width 1.4s cubic-bezier(.4,0,.2,1)}
+.tools-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem;margin-bottom:2rem}
+.tool-chip{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:.8rem;text-align:center;font-family:var(--mono);font-size:.8rem;color:rgba(255,255,255,.7);transition:all .3s}
+.tool-chip:hover{border-color:var(--teal);color:var(--teal);transform:translateY(-2px)}
+.lang-bars{margin-top:2rem}
+.lang-item{display:flex;align-items:center;gap:1rem;margin-bottom:1rem}
+.lang-flag{font-size:1.2rem}
+.lang-name{font-size:.85rem;min-width:160px}
+.lang-track{flex:1;height:6px;background:rgba(255,255,255,.08);border-radius:3px;overflow:hidden}
+.lang-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--blue),var(--teal))}
+/* EXPERIENCE TIMELINE */
+.timeline{position:relative;padding-left:2rem}
+.timeline::before{content:'';position:absolute;left:0;top:0;bottom:0;width:1px;background:linear-gradient(180deg,var(--blue),var(--teal),transparent)}
+.tl-item{position:relative;padding:0 0 3rem 3rem}
+.tl-dot{position:absolute;left:-6px;top:4px;width:13px;height:13px;border-radius:50%;border:2px solid var(--bg);background:var(--blue)}
+.tl-dot.gold{background:var(--gold)}
+.tl-date{font-family:var(--mono);font-size:.75rem;color:var(--teal);margin-bottom:.3rem}
+.tl-role{font-family:var(--display);font-size:1.1rem;font-weight:700;margin-bottom:.2rem}
+.tl-org{font-size:.9rem;color:rgba(255,255,255,.6);margin-bottom:.8rem}
+.tl-points{list-style:none;padding:0}
+.tl-points li{font-size:.9rem;color:rgba(255,255,255,.65);line-height:1.6;padding:.2rem 0;padding-left:1rem;position:relative}
+.tl-points li::before{content:'·';position:absolute;left:0;color:var(--teal)}
+/* HONORS */
+.honors-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem;margin-bottom:3rem}
+.honor-card{background:var(--surface);border:1px solid rgba(245,200,66,.2);border-radius:12px;padding:1.8rem;transition:all .3s;position:relative;overflow:hidden}
+.honor-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(245,200,66,.05),transparent);pointer-events:none}
+.honor-card:hover{border-color:rgba(245,200,66,.5);box-shadow:0 0 30px rgba(245,200,66,.08);transform:translateY(-3px)}
+.honor-icon{font-size:2rem;margin-bottom:.8rem}
+.honor-title{font-family:var(--display);font-size:1.1rem;font-weight:700;margin-bottom:.3rem}
+.honor-desc{font-size:.85rem;color:rgba(255,255,255,.6);line-height:1.6;margin-bottom:.8rem}
+.honor-pill{display:inline-block;padding:.25rem .7rem;background:rgba(245,200,66,.1);border:1px solid rgba(245,200,66,.3);color:var(--gold);font-family:var(--mono);font-size:.65rem;border-radius:20px}
+.certs-row{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.5rem;text-align:center}
+.certs-label{font-family:var(--mono);font-size:.75rem;color:rgba(255,255,255,.4);margin-bottom:1rem}
+.certs-list{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center}
+.cert-chip{padding:.25rem .7rem;background:rgba(79,142,247,.08);border:1px solid rgba(79,142,247,.2);color:rgba(255,255,255,.6);font-size:.75rem;border-radius:4px}
+/* CONTACT */
+.contact-grid{display:grid;grid-template-columns:45% 55%;gap:4rem;align-items:start}
+.email-big{font-family:var(--display);font-size:1.8rem;font-weight:700;margin:1.5rem 0;color:var(--white);transition:color .3s;display:inline-block}
+.email-big:hover{color:var(--blue)}
+.contact-pref{margin:1.5rem 0}
+.contact-pref p{font-size:.85rem;color:rgba(255,255,255,.6);line-height:2}
+.contact-pref strong{color:var(--teal)}
+.social-full{display:flex;flex-direction:column;gap:.6rem;margin:1.5rem 0}
+.social-full a{font-family:var(--mono);font-size:.8rem;color:rgba(255,255,255,.5);display:flex;align-items:center;gap:.5rem;transition:color .3s}
+.social-full a:hover{color:var(--white)}
+.resp-badge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(0,212,170,.08);border:1px solid rgba(0,212,170,.2);color:var(--teal);padding:.4rem 1rem;border-radius:20px;font-size:.8rem;margin-top:.5rem}
+.loc-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1rem;margin-top:1rem;font-size:.85rem;color:rgba(255,255,255,.6);line-height:2}
+.contact-form label{display:block;font-size:.8rem;color:rgba(255,255,255,.5);margin-bottom:.4rem;font-family:var(--mono)}
+.contact-form input,.contact-form select,.contact-form textarea{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--white);padding:.8rem 1rem;border-radius:6px;font-family:var(--body);font-size:.9rem;outline:none;transition:border-color .3s;margin-bottom:1rem;cursor:none}
+.contact-form input:focus,.contact-form select:focus,.contact-form textarea:focus{border-color:var(--blue)}
+.contact-form select{appearance:none;-webkit-appearance:none}
+.contact-form select option{background:#1a1a2e}
+.contact-form textarea{min-height:120px;resize:vertical}
+.form-success{display:none;background:rgba(0,212,170,.08);border:1px solid var(--teal);color:var(--teal);padding:1rem;border-radius:6px;text-align:center;font-family:var(--mono);font-size:.85rem}
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:2rem 0}
+.footer-inner{max-width:1200px;margin:0 auto;padding:0 60px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+.footer-logo{font-family:var(--display);font-weight:800;font-size:1.4rem}
+.footer-copy{font-size:.8rem;color:rgba(255,255,255,.4);text-align:center}
+.footer-copy a{color:rgba(255,255,255,.3);transition:color .3s}
+.footer-copy a:hover{color:var(--white)}
+.footer-icons{display:flex;gap:1rem}
+.footer-icons a{color:rgba(255,255,255,.4);transition:color .3s;font-size:1.2rem}
+.footer-icons a:hover{color:var(--white)}
+.footer-micro{text-align:center;padding:.8rem 0;font-size:.7rem;color:rgba(255,255,255,.2);font-family:var(--mono)}
+/* RESPONSIVE */
+@media(max-width:1024px){
+  #hero,nav{padding-left:40px;padding-right:40px}
+  .container{padding:0 40px}
+  .hero-topbar{left:40px;right:40px}
+}
+@media(max-width:768px){
+  nav{padding:0 24px}
+  .nav-links{display:none}
+  #hero{padding:0 24px}
+  .hero-topbar{left:24px;right:24px}
+  .container{padding:0 24px}
+  .about-grid,.contact-grid{grid-template-columns:1fr}
+  .honors-grid{grid-template-columns:1fr}
+  .rings-grid{grid-template-columns:repeat(2,1fr)}
+  .tools-grid{grid-template-columns:repeat(2,1fr)}
+  .hero-cta{flex-direction:column;align-items:flex-start}
+  .footer-inner{flex-direction:column;text-align:center}
+}
+@media(max-width:640px){
+  .section-title{font-size:2.5rem}
+  .hero-name{font-size:clamp(3rem,15vw,4.5rem)}
+}
+@media(prefers-reduced-motion:reduce){
+  *{transition-duration:.01ms !important;animation-duration:.01ms !important}
+  #loading{display:none}
+  .hero-name .letter{opacity:1;transform:none}
+}
+</style>
 </head>
 <body>
-    <div id="cursor-dot"></div><div id="cursor-glow"></div>
-    <nav><a href="#" style="color:white; text-decoration:none; font-weight:800; font-family:var(--font-display);">ET</a></nav>
-    <section id="hero" class="container">
-        <h1 class="hero-title">ELIASSE<br>TIAO</h1>
-        <p style="font-family:var(--font-code); color:var(--accent-teal);">Google DeepMind Scholar | AI Researcher</p>
-    </section>
-    <section id="projects" class="container">
-        <h2 style="font-family:var(--font-display); font-size:3rem; margin-bottom:50px;">The Forge [84 Repos]</h2>
-        <div class="project-grid">
+
+<a href="#main-content" class="skip-link">Skip to main content</a>
+<div id="cur"></div>
+<div id="glow"></div>
+
+<!-- LOADING -->
+<div id="loading">
+  <div class="load-mono" id="load-mono-text"></div>
+  <div class="load-bar-wrap"><div class="load-bar" id="load-bar"></div></div>
+</div>
+
+<canvas id="neural-canvas"></canvas>
+
+<nav id="navbar">
+  <a href="#hero" class="nav-logo">ET</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#research">Research</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<main id="main-content">
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-topbar">
+    <div class="hero-status"><span class="status-dot"></span>Open to Research Opportunities</div>
+    <div class="hero-clock" id="hero-clock">Cape Town, ZA · --:--:--</div>
+  </div>
+  <div class="hero-label">Google DeepMind Scholar · AIMS South Africa · 2026</div>
+  <h1 class="hero-name" data-text="ELIASSE TIAO" id="hero-name">
+    ELIASSE<br>TIAO
+  </h1>
+  <p class="hero-sub"><span id="typewriter"></span><span class="tw-cursor">|</span></p>
+  <p class="hero-tagline">"Building trustworthy AI systems for high-stakes decisions."</p>
+  <div class="hero-cta">
+    <a href="#research" class="btn btn-primary btn-magnetic" aria-label="View Research">View Research ↗</a>
+    <a href="#projects" class="btn btn-outline-teal">GitHub Projects</a>
+    <a href="#" class="btn btn-outline btn-magnetic" id="cv-download" aria-label="Download CV">Download CV ↓</a>
+    <a href="#contact" class="btn btn-text">Contact Me</a>
+  </div>
+  <div class="hero-social">
+    <a href="https://github.com/TIAO-Eliasse" target="_blank" rel="noopener" class="social-link" aria-label="GitHub">⌂ github.com/TIAO-Eliasse</a>
+    <a href="https://linkedin.com/in/eliasse-tiao" target="_blank" rel="noopener" class="social-link" aria-label="LinkedIn">◈ linkedin.com/in/eliasse-tiao</a>
+    <a href="mailto:eliasse@aims.ac.za" class="social-link" aria-label="Email">✉ eliasse@aims.ac.za</a>
+  </div>
+  <p class="gh-badge">⚡ <span data-github-total>Loading repos...</span> · 5 research papers</p>
+  <div class="scroll-indicator" aria-hidden="true"><span>scroll to explore</span><div class="scroll-chevron"></div></div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="section">
+  <div class="container">
+    <p class="section-label reveal">01 / About</p>
+    <h2 class="section-title reveal">Bridging AI Research<br><span>&amp; Real-World Impact</span></h2>
+    <div class="title-line reveal"></div>
+    <div class="about-grid">
+      <div>
+        <p class="bio-text reveal">I am an M.Sc. student in Artificial Intelligence at AIMS (Stellenbosch University), proudly funded by the Google DeepMind Scholarship — one of Africa's most competitive AI fellowships. Trained as a Statistician and Economic Engineer at ISSEA-CEMAC in Cameroon, my research bridges rigorous quantitative methods with cutting-edge machine learning.</p>
+        <p class="bio-text reveal">My work focuses on three interconnected themes: Explainable AI (XAI) for decision support, Natural Language Processing for multilingual low-resource settings, and Probabilistic Forecasting with interpretable uncertainty. I am co-author of a Camera-Ready paper published at SemEval-2026 (ACL Anthology), and co-author of four additional papers currently under review for IndabaX 2026 and IJCAI 2026, spanning Human-AI collaboration, early-warning systems for SME survival, flood forecasting, and continual learning on African datasets.</p>
+        <p class="bio-text reveal">Originally from Burkina Faso, educated across West and Central Africa, now conducting frontier AI research in Cape Town — my journey reflects resilience, excellence, and a commitment to making AI work for the African continent and the world.</p>
+        <div class="gh-activity reveal">
+          <div class="gh-mini"><div class="gh-mini-num" data-github-total>—</div><div class="gh-mini-label">Public Repos</div></div>
+          <div class="gh-mini"><div class="gh-mini-num" id="gh-stars">—</div><div class="gh-mini-label">Total Stars</div></div>
+          <div class="gh-mini"><div class="gh-mini-num" id="gh-lang">Python</div><div class="gh-mini-label">Top Language</div></div>
+        </div>
+        <div class="avail-pills reveal">
+          <span class="pill">🔬 Research Internships</span>
+          <span class="pill">🎓 PhD Positions</span>
+          <span class="pill">🤝 Collaborations</span>
+          <span class="pill">📊 Consulting</span>
+          <span class="pill">🌍 AI for Africa Projects</span>
+        </div>
+      </div>
+      <div class="stats-grid reveal">
+        <div class="stat-card gold"><div class="stat-num gold-text" data-count="5">0</div><div class="stat-label">Research Papers</div><div class="stat-sub">1 Published · 4 Under Review</div></div>
+        <div class="stat-card blue"><div class="stat-num blue-text" data-count="6">0</div><div class="stat-label">Ranked 6th</div><div class="stat-sub">SemEval-2026 · Hausa Track</div></div>
+        <div class="stat-card teal"><div class="stat-num teal-text" data-count-plus="10">0</div><div class="stat-label">ML/AI Projects</div><div class="stat-sub">Research + Industry + Academic</div></div>
+        <div class="stat-card grad"><div class="stat-num" style="background:linear-gradient(135deg,var(--blue),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent">100%</div><div class="stat-label">Google DeepMind Funded</div><div class="stat-sub">Full M.Sc. Scholarship · AIMS</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESEARCH -->
+<section id="research" class="section">
+  <div class="container">
+    <p class="section-label reveal">02 / Research</p>
+    <h2 class="section-title reveal">Publications &amp;<br><span>Research Papers</span></h2>
+    <div class="title-line reveal"></div>
+    
+    <div class="reveal" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:3rem;text-align:center">
+      <div style="background:var(--surface);border:1px solid rgba(245,200,66,.3);border-radius:10px;padding:1.2rem">
+        <div style="font-family:var(--display);font-size:2rem;font-weight:800;color:var(--gold)">1</div>
+        <div style="font-size:.8rem;color:rgba(255,255,255,.6);margin-top:.3rem">Published<br><span style="font-family:var(--mono);font-size:.7rem;color:rgba(255,255,255,.4)">ACL · SemEval-2026</span></div>
+      </div>
+      <div style="background:var(--surface);border:1px solid rgba(255,107,107,.3);border-radius:10px;padding:1.2rem">
+        <div style="font-family:var(--display);font-size:2rem;font-weight:800;color:#ff6b6b">4</div>
+        <div style="font-size:.8rem;color:rgba(255,255,255,.6);margin-top:.3rem">Under Review<br><span style="font-family:var(--mono);font-size:.7rem;color:rgba(255,255,255,.4)">IndabaX / IJCAI 2026</span></div>
+      </div>
+      <div style="background:var(--surface);border:1px solid rgba(0,212,170,.3);border-radius:10px;padding:1.2rem">
+        <div style="font-family:var(--display);font-size:2rem;font-weight:800;color:var(--teal)">1</div>
+        <div style="font-size:.8rem;color:rgba(255,255,255,.6);margin-top:.3rem">Ongoing<br><span style="font-family:var(--mono);font-size:.7rem;color:rgba(255,255,255,.4)">AIMS · Jun 2026</span></div>
+      </div>
+    </div>
+
+    <div class="research-cards">
+      <div class="res-card gold-card reveal">
+        <div class="res-header">
+          <span class="res-venue">📄 SemEval-2026 · ACL Anthology · Camera-Ready</span>
+          <span class="badge badge-gold">PUBLISHED 2026</span>
+        </div>
+        <h3 class="res-title">Label-Wise Optimization with Adaptive Focal Loss for Polarization Manifestation Identification</h3>
+        <p class="res-authors">TIAO E. &nbsp;·&nbsp; EDOU J.R. &nbsp;·&nbsp; GOHOUEDÉ M.A.L.</p>
+        <p class="res-abstract">Polarization in social media is a growing threat to democratic discourse. This paper addresses the automatic detection of fine-grained polarization manifestations — Vilification, Dehumanization, and Extreme Language — in English and Hausa posts, a severely under-resourced language pair in NLP.</p>
+        <div class="res-results">
+          <div class="res-result-item"><div class="res-result-val">15th</div><div class="res-result-label">English Track · Macro-F1 = 0.464</div></div>
+          <div class="res-result-item"><div class="res-result-val">6th</div><div class="res-result-label">Hausa Track · Macro-F1 = 0.192</div></div>
+        </div>
+        <div class="nb-block">
+          <div class="nb-header">── github.com/TIAO-Eliasse/nlp_project ──────────────────</div>
+          <div class="nb-item">📓 Subsract_1_final.ipynb <span>→ Preprocessing · RoBERTa/XLM-R tokenization · EDA</span></div>
+          <div class="nb-item">📓 substack_2_final.ipynb <span>→ Adaptive Focal Loss · One-vs-Rest training</span></div>
+          <div class="nb-item">📓 substack_3_final.ipynb <span>→ Threshold optimization · Final submission</span></div>
+        </div>
+        <div class="methods-tags">
+          <span class="m-tag">RoBERTa</span><span class="m-tag">Afro-XLM-R</span><span class="m-tag">Adaptive Focal Loss</span><span class="m-tag">One-vs-Rest</span><span class="m-tag">Label-wise Thresholding</span><span class="m-tag">PyTorch</span>
+        </div>
+        <div class="res-btns">
+          <a href="https://github.com/TIAO-Eliasse/nlp_project" target="_blank" rel="noopener" class="btn btn-outline-teal">View on GitHub ↗</a>
+        </div>
+      </div>
+      <div class="res-card teal-card reveal">
+        <div class="res-header">
+          <span class="res-venue">🔬 AIMS / Stellenbosch University · Jan–Jun 2026</span>
+          <span class="badge badge-live"><span class="live-dot"></span>IN PROGRESS</span>
+        </div>
+        <h3 class="res-title">Probabilistic Forecasting of Electricity Consumption &amp; Solar PV Production with Explainable Uncertainty Attribution</h3>
+        <p class="res-authors" style="color:rgba(255,255,255,.5)">Supervisors: Dr. Sabrina Amrouche &amp; Amal Nammouchi</p>
+        <p class="res-abstract" style="border-color:var(--teal)">Developing a unified probabilistic framework that jointly models electricity consumption and solar PV production across hourly, daily, and weekly horizons. The core innovation combines conformal prediction for calibrated intervals (P10/P50/P90) with SHAP-based attribution to explain drivers of uncertainty.</p>
+        <div class="methods-grid">
+          <div class="method-item"><strong>Quantile Regression</strong>LightGBM / XGBoost</div>
+          <div class="method-item"><strong>Conformal Prediction</strong>Calibrated coverage</div>
+          <div class="method-item"><strong>DeepVAR</strong>Multivariate deep learning</div>
+          <div class="method-item"><strong>SHAP Attribution</strong>Uncertainty drivers</div>
+          <div class="method-item"><strong>P10 / P50 / P90</strong>Prediction intervals</div>
+          <div class="method-item"><strong>Horizons</strong>Hourly · Daily · Weekly</div>
+        </div>
+        <div class="progress-wrap">
+          <div class="progress-label"><span>Expected completion: June 2026</span><span>65%</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:0" data-width="65"></div></div>
+        </div>
+      </div>
+
+      <!-- PAPERS UNDER REVIEW -->
+      <div style="margin-top:1rem">
+        <p class="section-label" style="margin-bottom:1.5rem">📋 Under Review — IndabaX / IJCAI 2026</p>
+      </div>
+
+      <div class="res-card reveal" style="border:1px solid rgba(255,107,107,0.3)">
+        <div class="res-header">
+          <span class="res-venue">🏛️ IndabaX / IJCAI 2026 · Under Review</span>
+          <span class="badge" style="background:rgba(255,107,107,.1);border:1px solid rgba(255,107,107,.4);color:#ff6b6b">UNDER REVIEW</span>
+        </div>
+        <h3 class="res-title">Data-Driven Lifelines: An AI and Econometric Early-Warning System for SME Survival in Cameroon</h3>
+        <p class="res-authors">Konlack Lonlack Giscard, <strong style="color:var(--teal)">Eliasse Tiao</strong></p>
+        <p class="res-abstract" style="border-color:rgba(255,107,107,.4)">Proposes a data-driven early-warning system for SME survival integrating econometric inference, ensemble ML, and survival analysis. Using 10,393 firms from Cameroon's national enterprise census (2017–2025), CatBoost achieves AUC = 0.884, macro F1 = 0.798. RSF attains C-index = 0.687 with firm-level survival curve estimation. Deployed as an interactive three-module dashboard on 23,162 SMEs, enabling proactive targeting of at-risk firms — directly relevant to Cameroon's NDS30 strategy.</p>
+        <div class="methods-tags">
+          <span class="m-tag">CatBoost</span><span class="m-tag">XGBoost</span><span class="m-tag">Random Survival Forest</span><span class="m-tag">Econometrics</span><span class="m-tag">Streamlit</span><span class="m-tag">AUC=0.884</span>
+        </div>
+      </div>
+
+      <div class="res-card reveal" style="border:1px solid rgba(255,107,107,0.3)">
+        <div class="res-header">
+          <span class="res-venue">🏛️ IndabaX / IJCAI 2026 · Under Review</span>
+          <span class="badge" style="background:rgba(255,107,107,.1);border:1px solid rgba(255,107,107,.4);color:#ff6b6b">UNDER REVIEW</span>
+        </div>
+        <h3 class="res-title">Optimizing Human-AI Collaboration for SME Survival: A Cost-Aware and Uncertainty-Guided Routing Approach</h3>
+        <p class="res-authors"><strong style="color:var(--teal)">Eliasse Tiao</strong>, Lionel Cedric Gohouede, Mahugnon Aime Loick Gohouede, Josué Romaric Edou, Vicent Mwanda</p>
+        <p class="res-abstract" style="border-color:rgba(255,107,107,.4)">Introduces S3, a cost-sensitive Human-AI routing framework for SME failure prediction. Decomposes model uncertainty into aleatoric (borderline cases → data analyst) and epistemic (diverging trajectories → survival specialist) channels. Evaluated on 7,859 Cameroonian SMEs, S3 reduces expected costs by 13.0% over full automation, satisfies 6/9 demographic fairness criteria, and cuts undetected failures by 97% on automated cases.</p>
+        <div class="methods-tags">
+          <span class="m-tag">Human-AI Collaboration</span><span class="m-tag">Cost-Sensitive Learning</span><span class="m-tag">Uncertainty Decomposition</span><span class="m-tag">Fairness</span><span class="m-tag">SME Survival</span>
+        </div>
+      </div>
+
+      <div class="res-card reveal" style="border:1px solid rgba(255,107,107,0.3)">
+        <div class="res-header">
+          <span class="res-venue">🏛️ IndabaX / IJCAI 2026 · Under Review</span>
+          <span class="badge" style="background:rgba(255,107,107,.1);border:1px solid rgba(255,107,107,.4);color:#ff6b6b">UNDER REVIEW</span>
+        </div>
+        <h3 class="res-title">FloodTriage: A Decision-Theoretic Tri-Fold Deferral Policy for Human-AI Collaboration in Streamflow Forecasting</h3>
+        <p class="res-authors">Lionel Cedric Gohouede, Mahugnon Aime Loick Gohouede, <strong style="color:var(--teal)">Eliasse Tiao</strong>, Josué Romaric Edou</p>
+        <p class="res-abstract" style="border-color:rgba(255,107,107,.4)">FloodTriage combines a five-member LSTM deep ensemble with an XGBoost surrogate and human-in-the-loop protocol, governed by a Tri-Fold Routing Gateway decomposing deferral into epistemic, aleatoric, and Knightian uncertainty signals. Applied to the Ouémé River (Benin, West Africa): reduces flood miss rate from 0.483 → 0.399, improves KGE from 0.720 → 0.784, while deferring only 25.9% of timesteps.</p>
+        <div class="methods-tags">
+          <span class="m-tag">LSTM Ensemble</span><span class="m-tag">XGBoost</span><span class="m-tag">Deferral Learning</span><span class="m-tag">Streamflow</span><span class="m-tag">Human-AI</span><span class="m-tag">West Africa</span>
+        </div>
+      </div>
+
+      <div class="res-card reveal" style="border:1px solid rgba(255,107,107,0.3)">
+        <div class="res-header">
+          <span class="res-venue">🏛️ IndabaX / IJCAI 2026 · Under Review</span>
+          <span class="badge" style="background:rgba(255,107,107,.1);border:1px solid rgba(255,107,107,.4);color:#ff6b6b">UNDER REVIEW</span>
+        </div>
+        <h3 class="res-title">Optimiser Geometry and Catastrophic Forgetting: Comparative Study on a Real-World African Agricultural Dataset</h3>
+        <p class="res-authors">Josué Romaric Edou, <strong style="color:var(--teal)">Eliasse Tiao</strong>, Mahugnon Aime Loick Gohouede, Lionel Cedric Gohouede</p>
+        <p class="res-abstract" style="border-color:rgba(255,107,107,.4)">Controlled comparative study of Adam, Sparse Adam, Natural Gradient, and EWC for continual learning on Cassava Leaf Disease dataset (Uganda, 21,418 images). Sparse Adam (k=10%) achieves highest average accuracy (0.614 ± 0.004), outperforming standard Adam (0.506 ± 0.010). EWC near-eliminates forgetting (BWT = -0.040) at cost of lowest accuracy. Provides practical guidance for African agricultural AI systems.</p>
+        <div class="methods-tags">
+          <span class="m-tag">Continual Learning</span><span class="m-tag">Catastrophic Forgetting</span><span class="m-tag">Sparse Adam</span><span class="m-tag">EWC</span><span class="m-tag">Agricultural AI</span><span class="m-tag">Africa</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects" class="section">
+  <div class="container">
+    <div class="projects-header">
+      <div>
+        <p class="section-label reveal">03 / Projects</p>
+        <h2 class="section-title reveal">What I've <span>Built</span></h2>
+      </div>
+      <div class="gh-live-bar reveal">⚡ Live · <span data-github-total>—</span> repos · github.com/TIAO-Eliasse</div>
+    </div>
+    <div class="title-line reveal"></div>
+<div class="project-grid">
         <div class="project-card reveal tilt " data-repo="RECOMMATIONS_systemMLATSCALE">
           <div class="card-header">
             <span class="repo-lang">● Python</span>
@@ -95,7 +591,14 @@
           <p class="card-subtitle" style="color: var(--accent-teal); font-family: var(--font-code); font-size: 0.8rem; margin-bottom: 15px;">Transformers · Adaptive Focal Loss · SemEval-2026</p>
           <p class="card-desc" style="font-size: 0.95rem; opacity: 0.7;">A production-grade NLP system for fine-grained identification of polarization (Vilification, Dehumanization) in English and Hausa. Ranked 6th globally on the Hausa track.</p>
           <div class="card-topics"><span class="tag">[PyTorch]</span><span class="tag">[Transformers]</span><span class="tag">[NLP]</span><span class="tag">[XAI]</span><span class="tag">[SemEval-2026]</span></div>
-          <a class="repo-link card-btn" href="https://github.com/TIAO-Eliasse/nlp_project" target="_blank" rel="noopener noreferrer">View Research Architecture ↗</a>
+          <div class="terminal">
+          <div class="terminal-line">$ python train.py --model roberta --lang en+ha</div>
+          <div class="terminal-line">&gt; Loading dataset... ✓ 12,847 samples</div>
+          <div class="terminal-line">&gt; Training RoBERTa encoder...</div>
+          <div class="terminal-line">&gt; Epoch 5/5 — F1: 0.464 (EN) | 0.192 (HA)</div>
+          <div class="terminal-line">✓ Model saved. Ranked 6th / Hausa Track.</div>
+        </div>
+        <a class="repo-link card-btn" href="https://github.com/TIAO-Eliasse/nlp_project" target="_blank" rel="noopener noreferrer">View Research Architecture ↗</a>
         </div>
         <div class="project-card reveal tilt " data-repo="DeepSemantics-SemEval">
           <div class="card-header">
@@ -1009,18 +1512,491 @@
           <div class="card-topics"><span class="tag">[Jupyter Notebook]</span></div>
           <a class="repo-link card-btn" href="https://github.com/TIAO-Eliasse/Attrition" target="_blank" rel="noopener noreferrer">View Research Architecture ↗</a>
         </div></div>
-    </section>
-    <script>
-        window.addEventListener('mousemove', (e) => {
-            document.getElementById('cursor-dot').style.left = e.clientX + 'px';
-            document.getElementById('cursor-dot').style.top = e.clientY + 'px';
-            document.getElementById('cursor-glow').style.left = e.clientX + 'px';
-            document.getElementById('cursor-glow').style.top = e.clientY + 'px';
-        });
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
-        }, { threshold: 0.1 });
-        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-    </script>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills" class="section">
+  <div class="container">
+    <p class="section-label reveal">04 / Skills</p>
+    <h2 class="section-title reveal">Technical <span>Arsenal</span></h2>
+    <div class="title-line reveal"></div>
+    <div class="skills-tabs reveal">
+      <button class="tab-btn active" data-tab="tab-ml" aria-selected="true">AI &amp; Machine Learning</button>
+      <button class="tab-btn" data-tab="tab-stats" aria-selected="false">Statistics &amp; Causal Inference</button>
+      <button class="tab-btn" data-tab="tab-tools" aria-selected="false">Tools &amp; Languages</button>
+    </div>
+    <div id="tab-ml" class="tab-pane active">
+      <div class="rings-grid reveal">
+        <div class="ring-item"><div class="ring-wrap"><svg class="ring-svg" viewBox="0 0 72 72" width="72" height="72"><circle class="ring-bg" cx="36" cy="36" r="32"/><circle class="ring-prog" cx="36" cy="36" r="32" data-pct="95" stroke="url(#rg)"/></svg><div class="ring-pct">95%</div></div><div class="ring-label">Explainable AI / SHAP</div></div>
+        <div class="ring-item"><div class="ring-wrap"><svg class="ring-svg" viewBox="0 0 72 72" width="72" height="72"><circle class="ring-bg" cx="36" cy="36" r="32"/><circle class="ring-prog" cx="36" cy="36" r="32" data-pct="92" stroke="url(#rg)"/></svg><div class="ring-pct">92%</div></div><div class="ring-label">XGBoost / LightGBM</div></div>
+        <div class="ring-item"><div class="ring-wrap"><svg class="ring-svg" viewBox="0 0 72 72" width="72" height="72"><circle class="ring-bg" cx="36" cy="36" r="32"/><circle class="ring-prog" cx="36" cy="36" r="32" data-pct="88" stroke="url(#rg)"/></svg><div class="ring-pct">88%</div></div><div class="ring-label">NLP / Transformers</div></div>
+        <div class="ring-item"><div class="ring-wrap"><svg class="ring-svg" viewBox="0 0 72 72" width="72" height="72"><circle class="ring-bg" cx="36" cy="36" r="32"/><circle class="ring-prog" cx="36" cy="36" r="32" data-pct="84" stroke="url(#rg)"/></svg><div class="ring-pct">84%</div></div><div class="ring-label">LangChain / Agentic AI</div></div>
+        <div class="ring-item"><div class="ring-wrap"><svg class="ring-svg" viewBox="0 0 72 72" width="72" height="72"><circle class="ring-bg" cx="36" cy="36" r="32"/><circle class="ring-prog" cx="36" cy="36" r="32" data-pct="82" stroke="url(#rg)"/></svg><div class="ring-pct">82%</div></div><div class="ring-label">PyTorch / Deep Learning</div></div>
+        <div class="ring-item"><div class="ring-wrap"><svg class="ring-svg" viewBox="0 0 72 72" width="72" height="72"><circle class="ring-bg" cx="36" cy="36" r="32"/><circle class="ring-prog" cx="36" cy="36" r="32" data-pct="78" stroke="url(#rg)"/></svg><div class="ring-pct">78%</div></div><div class="ring-label">Conformal Prediction / UQ</div></div>
+      </div>
+      <svg width="0" height="0"><defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#4f8ef7"/><stop offset="100%" stop-color="#00d4aa"/></linearGradient></defs></svg>
+      <div class="skill-bars reveal" style="margin-top:2.5rem">
+        <div class="skill-bar-item"><span class="skill-bar-label">Reinforcement Learning</span><div class="skill-bar-track"><div class="skill-bar-fill" data-w="65"></div></div></div>
+        <div class="skill-bar-item"><span class="skill-bar-label">Generative AI</span><div class="skill-bar-track"><div class="skill-bar-fill" data-w="75"></div></div></div>
+        <div class="skill-bar-item"><span class="skill-bar-label">MLOps</span><div class="skill-bar-track"><div class="skill-bar-fill" data-w="72"></div></div></div>
+      </div>
+    </div>
+    <div id="tab-stats" class="tab-pane">
+      <div class="rings-grid reveal">
+        <div class="ring-item"><div class="ring-wrap"><svg class="ring-svg" viewBox="0 0 72 72" width="72" height="72"><circle class="ring-bg" cx="36" cy="36" r="32"/><circle class="ring-prog" cx="36" cy="36" r="32" data-pct="88" stroke="url(#rg2)"/></svg><div class="ring-pct">88%</div></div><div class="ring-label">Panel Data Econometrics</div></div>
+        <div class="ring-item"><div class="ring-wrap"><svg class="ring-svg" viewBox="0 0 72 72" width="72" height="72"><circle class="ring-bg" cx="36" cy="36" r="32"/><circle class="ring-prog" cx="36" cy="36" r="32" data-pct="86" stroke="url(#rg2)"/></svg><div class="ring-pct">86%</div></div><div class="ring-label">Causal Inference / PSM</div></div>
+        <div class="ring-item"><div class="ring-wrap"><svg class="ring-svg" viewBox="0 0 72 72" width="72" height="72"><circle class="ring-bg" cx="36" cy="36" r="32"/><circle class="ring-prog" cx="36" cy="36" r="32" data-pct="85" stroke="url(#rg2)"/></svg><div class="ring-pct">85%</div></div><div class="ring-label">Bayesian Inference</div></div>
+        <div class="ring-item"><div class="ring-wrap"><svg class="ring-svg" viewBox="0 0 72 72" width="72" height="72"><circle class="ring-bg" cx="36" cy="36" r="32"/><circle class="ring-prog" cx="36" cy="36" r="32" data-pct="82" stroke="url(#rg2)"/></svg><div class="ring-pct">82%</div></div><div class="ring-label">Time Series (ARIMA/GARCH)</div></div>
+        <div class="ring-item"><div class="ring-wrap"><svg class="ring-svg" viewBox="0 0 72 72" width="72" height="72"><circle class="ring-bg" cx="36" cy="36" r="32"/><circle class="ring-prog" cx="36" cy="36" r="32" data-pct="78" stroke="url(#rg2)"/></svg><div class="ring-pct">78%</div></div><div class="ring-label">Survival Analysis</div></div>
+        <div class="ring-item"><div class="ring-wrap"><svg class="ring-svg" viewBox="0 0 72 72" width="72" height="72"><circle class="ring-bg" cx="36" cy="36" r="32"/><circle class="ring-prog" cx="36" cy="36" r="32" data-pct="76" stroke="url(#rg2)"/></svg><div class="ring-pct">76%</div></div><div class="ring-label">Monte Carlo Methods</div></div>
+      </div>
+      <svg width="0" height="0"><defs><linearGradient id="rg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#4f8ef7"/><stop offset="100%" stop-color="#00d4aa"/></linearGradient></defs></svg>
+    </div>
+    <div id="tab-tools" class="tab-pane">
+      <div class="tools-grid reveal">
+        <div class="tool-chip">Python</div><div class="tool-chip">R</div><div class="tool-chip">SQL</div><div class="tool-chip">Stata</div>
+        <div class="tool-chip">PyTorch</div><div class="tool-chip">HuggingFace</div><div class="tool-chip">Streamlit</div><div class="tool-chip">LangChain</div>
+        <div class="tool-chip">Power BI</div><div class="tool-chip">LaTeX</div><div class="tool-chip">Git</div><div class="tool-chip">ODK/CSPro</div>
+      </div>
+      <div class="lang-bars reveal" style="max-width:500px">
+        <div class="lang-item"><span class="lang-flag">🇫🇷</span><span class="lang-name">French — Native</span><div class="lang-track"><div class="lang-fill" style="width:100%"></div></div></div>
+        <div class="lang-item"><span class="lang-flag">🇬🇧</span><span class="lang-name">English — Academic / Full</span><div class="lang-track"><div class="lang-fill" style="width:95%"></div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience" class="section">
+  <div class="container">
+    <p class="section-label reveal">05 / Experience</p>
+    <h2 class="section-title reveal">Professional <span>Journey</span></h2>
+    <div class="title-line reveal"></div>
+    <div class="timeline">
+      <div class="tl-item reveal"><div class="tl-dot"></div><div class="tl-date">2026 — Ongoing 🔬</div><div class="tl-role">Master's Research Project</div><div class="tl-org">AIMS / Stellenbosch University · Cape Town</div><ul class="tl-points"><li>Probabilistic forecasting for electricity + solar PV systems</li><li>SHAP-based uncertainty attribution for operational explainability</li><li>Methods: Quantile Regression, Conformal Prediction, DeepVAR</li></ul></div>
+      <div class="tl-item reveal"><div class="tl-dot gold"></div><div class="tl-date">2025–2026 🎓 <span style="color:var(--gold);font-weight:700">Google DeepMind Scholar</span></div><div class="tl-role">M.Sc. Artificial Intelligence</div><div class="tl-org">AIMS / Stellenbosch University · Cape Town</div><ul class="tl-points"><li>Full scholarship — one of Africa's most competitive AI fellowships</li><li>Coursework: XAI, NLP &amp; LLMs, RL, Bayesian Inference, MLOps, Monte Carlo</li><li>SemEval-2026: Ranked 6th (Hausa), 15th (English) globally</li><li>Co-authored Camera-Ready paper — ACL Anthology 2026</li></ul></div>
+      <div class="tl-item reveal"><div class="tl-dot"></div><div class="tl-date">Mar–Jul 2025 💼</div><div class="tl-role">Statistician &amp; Economist Engineer (Internship)</div><div class="tl-org">National Institute of Statistics (NIS) · Cameroon</div><ul class="tl-points"><li>Designed 112-wave longitudinal pipeline (enterprise census + fiscal data)</li><li>PSM impact evaluation: 26.3% vs 13.3% treatment effect on SME performance</li><li>MICS7 survey sampling + vaccination coverage estimation (95% CI)</li><li>Deployed Streamlit risk monitoring dashboard for policy analysts</li></ul></div>
+      <div class="tl-item reveal"><div class="tl-dot"></div><div class="tl-date">2025 🏆</div><div class="tl-role">Finalist · IndabaX Cameroon Hackathon</div><div class="tl-org">Deep Learning Indaba Network · National AI Competition</div><ul class="tl-points"><li>Data Visualization innovation track — team achievement</li></ul></div>
+      <div class="tl-item reveal"><div class="tl-dot"></div><div class="tl-date">2024 🥈</div><div class="tl-role">2nd Prize · Data Visualization Competition</div><div class="tl-org">ISSEA-CEMAC · Cameroon</div><ul class="tl-points"><li>Best data storytelling on Employment Statistics in Africa</li></ul></div>
+      <div class="tl-item reveal"><div class="tl-dot"></div><div class="tl-date">Sep 2022–Jul 2025 🎓</div><div class="tl-role">Engineer in Statistics &amp; Economics</div><div class="tl-org">ISSEA-CEMAC · Cameroon</div><ul class="tl-points"><li>Top engineering degree in Statistics in Central Africa</li><li>Engineering thesis: SME survival prediction (C-index = 0.70)</li></ul></div>
+      <div class="tl-item reveal"><div class="tl-dot"></div><div class="tl-date">Sep 2020–Jul 2022 📚</div><div class="tl-role">CPGE MPSI/MP · State Scholar</div><div class="tl-org">Polytechnic School of Ouagadougou · Burkina Faso</div><ul class="tl-points"><li>Merit-based national scholarship for outstanding performance</li><li>Intensive preparation: Mathematics, Physics, Computer Science</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<!-- HONORS -->
+<section id="honors" class="section">
+  <div class="container">
+    <p class="section-label reveal">06 / Honors</p>
+    <h2 class="section-title reveal">Awards &amp; <span>Recognition</span></h2>
+    <p class="reveal" style="color:rgba(255,255,255,.5);margin-bottom:3rem">Excellence recognized across three countries</p>
+    <div class="honors-grid">
+      <div class="honor-card reveal"><div class="honor-icon">🎯</div><div class="honor-title">Google DeepMind Scholarship</div><div class="honor-desc">Full M.Sc. scholarship at AIMS — one of Africa's most selective AI fellowships. Covers tuition, accommodation, and living expenses.</div><span class="honor-pill">ACTIVE · Stellenbosch University · 2025–present</span></div>
+      <div class="honor-card reveal"><div class="honor-icon">🏆</div><div class="honor-title">Finalist · IndabaX Cameroon Hackathon</div><div class="honor-desc">National AI competition by Deep Learning Indaba network. Finalist in Data Visualization innovation track (team achievement).</div><span class="honor-pill">National Competition · Cameroon · 2025</span></div>
+      <div class="honor-card reveal"><div class="honor-icon">🥈</div><div class="honor-title">2nd Prize · Data Visualization</div><div class="honor-desc">Best data storytelling and interactive dashboard on Employment Statistics in Africa — ISSEA-CEMAC internal competition.</div><span class="honor-pill">ISSEA-CEMAC · Cameroon · 2024</span></div>
+      <div class="honor-card reveal"><div class="honor-icon">📜</div><div class="honor-title">State Scholarship · Burkina Faso</div><div class="honor-desc">Merit-based national scholarship awarded for outstanding academic performance at entry into competitive CPGE engineering classes.</div><span class="honor-pill">National Merit · Burkina Faso · 2020</span></div>
+    </div>
+    <div class="certs-row reveal">
+      <div class="certs-label">KAGGLE CERTIFICATIONS (2024)</div>
+      <div class="certs-list">
+        <span class="cert-chip">ML Explainability</span><span class="cert-chip">Feature Engineering</span><span class="cert-chip">Time Series</span><span class="cert-chip">Intermediate ML</span><span class="cert-chip">Deep Learning</span><span class="cert-chip">Geospatial Analysis</span><span class="cert-chip">Data Visualization</span>
+        <span class="cert-chip">Project Management (AFD)</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="section">
+  <div class="container">
+    <p class="section-label reveal">07 / Contact</p>
+    <h2 class="section-title reveal">Open to <span>Opportunities</span></h2>
+    <p class="reveal" style="color:rgba(255,255,255,.5);margin-bottom:3rem">Research internships · PhD positions · Collaborations · Consulting</p>
+    <div class="contact-grid">
+      <div class="reveal">
+        <a href="mailto:eliasse@aims.ac.za" class="email-big">eliasse@aims.ac.za</a>
+        <div class="contact-pref">
+          <p>→ <strong>Google DeepMind / IBM / Meta AI:</strong> LinkedIn DM</p>
+          <p>→ <strong>Research collaborations:</strong> Email</p>
+          <p>→ <strong>Academic + consulting:</strong> Email</p>
+        </div>
+        <div class="social-full">
+          <a href="https://github.com/TIAO-Eliasse" target="_blank" rel="noopener">⌂ github.com/TIAO-Eliasse</a>
+          <a href="https://linkedin.com/in/eliasse-tiao" target="_blank" rel="noopener">◈ linkedin.com/in/eliasse-tiao</a>
+          <a href="mailto:eliasse@aims.ac.za">✉ eliasse@aims.ac.za</a>
+        </div>
+        <div class="resp-badge">⚡ Typically responds within 24h</div>
+        <div class="loc-card">📍 Cape Town, South Africa · GMT+2<br>🌍 Open to remote &amp; relocation worldwide</div>
+      </div>
+      <div class="reveal">
+        <form class="contact-form" id="contact-form" aria-label="Contact form">
+          <div><label for="f-name">Name</label><input type="text" id="f-name" name="name" aria-required="true" placeholder="Your name" autocomplete="name"></div>
+          <div><label for="f-email">Email</label><input type="email" id="f-email" name="email" aria-required="true" placeholder="your@email.com" autocomplete="email"></div>
+          <div><label for="f-org">Organization</label><input type="text" id="f-org" name="org" placeholder="e.g., Google DeepMind, MIT, Independent"></div>
+          <div><label for="f-sub">Subject</label><select id="f-sub" name="subject" aria-required="true"><option value="">Select subject...</option><option>Research Collaboration</option><option>PhD Position Inquiry</option><option>Internship / Employment</option><option>Speaking / Conference</option><option>Project Consulting</option><option>Other</option></select></div>
+          <div><label for="f-msg">Message</label><textarea id="f-msg" name="message" aria-required="true" placeholder="Your message..."></textarea></div>
+          <button type="submit" class="btn btn-primary btn-magnetic" style="width:100%;justify-content:center" aria-label="Send message">Send Message →</button>
+        </form>
+        <div class="form-success" id="form-success" role="alert">✓ Message prepared! Your email client will open.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <span class="footer-logo">ET</span>
+    <div class="footer-copy">
+      © 2026 Eliasse TIAO · AI Researcher · Cape Town, South Africa<br>
+      <a href="https://github.com/TIAO-Eliasse" target="_blank" rel="noopener">GitHub</a> · 
+      <a href="https://linkedin.com/in/eliasse-tiao" target="_blank" rel="noopener">LinkedIn</a> · 
+      <a href="mailto:eliasse@aims.ac.za">Email</a>
+    </div>
+    <div></div>
+  </div>
+  <p class="footer-micro">Designed &amp; coded with precision · Pure HTML / CSS / JS · Zero frameworks · Last updated: <span id="last-updated"></span></p>
+</footer>
+
+<script>
+// ── LOADING ───────────────────────────────────────────────────────────────
+const loadMono = document.getElementById('load-mono-text');
+const loadBar  = document.getElementById('load-bar');
+const loading  = document.getElementById('loading');
+let loadFrame = 0;
+const text = 'ET';
+let lIdx = 0;
+const typeLoad = () => { if(lIdx <= text.length){ loadMono.textContent = text.slice(0,lIdx); lIdx++; setTimeout(typeLoad,200); } };
+typeLoad();
+setTimeout(()=>{ loadBar.style.width='100%'; },100);
+window.addEventListener('load',()=>{
+  setTimeout(()=>{ loading.classList.add('done'); setTimeout(()=>{ loading.style.display='none'; },600); initAnimations(); },2200);
+});
+
+// ── NEURAL CANVAS ─────────────────────────────────────────────────────────
+const canvas = document.getElementById('neural-canvas');
+const ctx    = canvas.getContext('2d');
+let nodes=[], W, H, animFrame, lastPulse=0;
+const N=70, DIST=140, BLUE='#4f8ef7', TEAL='#00d4aa';
+let mx=-999,my=-999;
+
+function resize(){
+  W=canvas.width=window.innerWidth;
+  H=canvas.height=window.innerHeight;
+  nodes=Array.from({length:N},()=>({
+    x:Math.random()*W, y:Math.random()*H,
+    vx:(Math.random()-.5)*.3, vy:(Math.random()-.5)*.3,
+    r:1.5+Math.random()*2, phase:Math.random()*Math.PI*2
+  }));
+}
+
+let pulseEdge=null, pulseT=0;
+
+function drawCanvas(t){
+  if(document.visibilityState==='hidden'){ animFrame=requestAnimationFrame(drawCanvas); return; }
+  ctx.clearRect(0,0,W,H);
+
+  // spawn pulse every 2s
+  if(t - lastPulse > 2000){
+    const a=Math.floor(Math.random()*N);
+    let b=-1;
+    for(let i=0;i<N;i++){
+      if(i===a) continue;
+      const dx=nodes[a].x-nodes[i].x, dy=nodes[a].y-nodes[i].y;
+      if(Math.sqrt(dx*dx+dy*dy)<DIST){ b=i; break; }
+    }
+    if(b>=0){ pulseEdge=[a,b]; pulseT=0; lastPulse=t; }
+  }
+
+  nodes.forEach(n=>{
+    n.x+=n.vx; n.y+=n.vy;
+    if(n.x<0||n.x>W) n.vx*=-1;
+    if(n.y<0||n.y>H) n.vy*=-1;
+    const pulse = .4 + .4*Math.sin(t*.002 + n.phase);
+    const dx=n.x-mx, dy=n.y-my, near=Math.sqrt(dx*dx+dy*dy)<120;
+    const alpha = near ? Math.min(1, pulse+.4) : pulse;
+    ctx.beginPath();
+    ctx.arc(n.x,n.y,n.r,0,Math.PI*2);
+    ctx.fillStyle=`rgba(79,142,247,${alpha})`;
+    ctx.fill();
+  });
+
+  for(let i=0;i<N;i++){
+    for(let j=i+1;j<N;j++){
+      const dx=nodes[i].x-nodes[j].x, dy=nodes[i].y-nodes[j].y;
+      const d=Math.sqrt(dx*dx+dy*dy);
+      if(d<DIST){
+        const a=(.3*(1-d/DIST));
+        ctx.beginPath();
+        ctx.moveTo(nodes[i].x,nodes[i].y);
+        ctx.lineTo(nodes[j].x,nodes[j].y);
+        ctx.strokeStyle=`rgba(0,212,170,${a})`;
+        ctx.lineWidth=.6;
+        ctx.stroke();
+      }
+    }
+  }
+
+  // signal pulse
+  if(pulseEdge){
+    pulseT = Math.min(pulseT+.015, 1);
+    const a=nodes[pulseEdge[0]], b=nodes[pulseEdge[1]];
+    const px=a.x+(b.x-a.x)*pulseT, py=a.y+(b.y-a.y)*pulseT;
+    ctx.beginPath(); ctx.arc(px,py,3.5,0,Math.PI*2);
+    ctx.fillStyle=`rgba(245,200,66,${1-pulseT})`;
+    ctx.fill();
+    if(pulseT>=1) pulseEdge=null;
+  }
+
+  animFrame=requestAnimationFrame(drawCanvas);
+}
+
+window.addEventListener('mousemove',e=>{ mx=e.clientX; my=e.clientY; });
+window.addEventListener('resize',resize);
+resize();
+requestAnimationFrame(drawCanvas);
+
+// ── CURSOR ────────────────────────────────────────────────────────────────
+const cur=document.getElementById('cur');
+const glow=document.getElementById('glow');
+let gx=0,gy=0,cx=0,cy=0;
+window.addEventListener('mousemove',e=>{ cx=e.clientX; cy=e.clientY; });
+(function lerpCursor(){
+  gx+=(cx-gx)*.08; gy+=(cy-gy)*.08;
+  cur.style.left=cx+'px'; cur.style.top=cy+'px';
+  glow.style.left=gx+'px'; glow.style.top=gy+'px';
+  requestAnimationFrame(lerpCursor);
+})();
+document.querySelectorAll('a,button,[role="button"]').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{ cur.style.width='36px'; cur.style.height='36px'; });
+  el.addEventListener('mouseleave',()=>{ cur.style.width='8px'; cur.style.height='8px'; });
+});
+
+// ── NAVBAR SCROLL ─────────────────────────────────────────────────────────
+const nav=document.getElementById('navbar');
+const sections=document.querySelectorAll('section[id]');
+const navLinks=document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll',()=>{
+  nav.classList.toggle('scrolled',window.scrollY>60);
+});
+const navObserver=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      navLinks.forEach(l=>l.classList.toggle('active',l.getAttribute('href')==='#'+e.target.id));
+    }
+  });
+},{threshold:.3});
+sections.forEach(s=>navObserver.observe(s));
+
+// ── HERO CLOCK ────────────────────────────────────────────────────────────
+const clockEl=document.getElementById('hero-clock');
+function updateClock(){
+  const d=new Date();
+  const t=d.toLocaleTimeString('en-GB',{timeZone:'Africa/Johannesburg',hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  clockEl.textContent='Cape Town, ZA · '+t;
+}
+setInterval(updateClock,1000); updateClock();
+
+// ── HERO NAME REVEAL ──────────────────────────────────────────────────────
+function initAnimations(){
+  const nameEl=document.getElementById('hero-name');
+  const rawHTML=nameEl.innerHTML;
+  // Wrap each non-tag character
+  let out='', i=0;
+  while(i<rawHTML.length){
+    if(rawHTML[i]==='<'){
+      const close=rawHTML.indexOf('>',i);
+      out+=rawHTML.slice(i,close+1); i=close+1;
+    } else if(rawHTML[i]===' '){
+      out+=' '; i++;
+    } else {
+      out+=`<span class="letter">${rawHTML[i]}</span>`; i++;
+    }
+  }
+  nameEl.innerHTML=out;
+  document.querySelectorAll('#hero-name .letter').forEach((l,idx)=>{
+    setTimeout(()=>{ l.style.opacity='1'; l.style.transform='translateY(0)'; },300+idx*60);
+  });
+  // glitch on hover
+  nameEl.addEventListener('mouseenter',()=>{
+    if(nameEl.classList.contains('glitch-active')) return;
+    nameEl.classList.add('glitch-active');
+    setTimeout(()=>nameEl.classList.remove('glitch-active'),600);
+  });
+}
+
+// ── TYPEWRITER ────────────────────────────────────────────────────────────
+const roles=['AI Researcher','XAI & Explainability Specialist','NLP Engineer · Transformers','Probabilistic Forecaster','Google DeepMind Scholar','5 Research Papers · IJCAI & ACL'];
+let rIdx=0,cIdx=0,deleting=false;
+const twEl=document.getElementById('typewriter');
+function typeStep(){
+  const word=roles[rIdx];
+  if(!deleting){
+    twEl.textContent=word.slice(0,cIdx+1); cIdx++;
+    if(cIdx===word.length){ deleting=true; setTimeout(typeStep,2200); return; }
+    setTimeout(typeStep,75);
+  } else {
+    twEl.textContent=word.slice(0,cIdx-1); cIdx--;
+    if(cIdx===0){ deleting=false; rIdx=(rIdx+1)%roles.length; }
+    setTimeout(typeStep,35);
+  }
+}
+setTimeout(typeStep,2500);
+
+// ── REVEAL ────────────────────────────────────────────────────────────────
+const revObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visible'); revObs.unobserve(e.target); } });
+},{threshold:.08,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>revObs.observe(el));
+
+// ── STAT COUNTERS ─────────────────────────────────────────────────────────
+function easeOut(t){ return 1-Math.pow(1-t,4); }
+function animCount(el, target, plus=false){
+  const start=performance.now(), dur=2000;
+  (function step(now){
+    const p=Math.min((now-start)/dur,1);
+    el.textContent=Math.floor(easeOut(p)*target)+(plus?'+':'');
+    if(p<1) requestAnimationFrame(step);
+    else { el.style.color='var(--gold)'; setTimeout(()=>el.style.color='',300); }
+  })(performance.now());
+}
+const statObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.querySelectorAll('[data-count]').forEach(el=>animCount(el,+el.dataset.count));
+      e.target.querySelectorAll('[data-count-plus]').forEach(el=>animCount(el,+el.dataset.countPlus,true));
+      statObs.unobserve(e.target);
+    }
+  });
+},{threshold:.3});
+const aboutEl=document.getElementById('about');
+if(aboutEl) statObs.observe(aboutEl);
+
+// ── PROGRESS RINGS ────────────────────────────────────────────────────────
+const circum=2*Math.PI*32;
+const ringObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.querySelectorAll('.ring-prog').forEach(r=>{
+        const pct=+r.dataset.pct/100;
+        r.style.strokeDashoffset=circum*(1-pct);
+      });
+      e.target.querySelectorAll('.skill-bar-fill[data-w]').forEach(b=>{
+        b.style.width=b.dataset.w+'%';
+      });
+      e.target.querySelectorAll('.progress-fill[data-width]').forEach(b=>{
+        b.style.width=b.dataset.width+'%';
+      });
+      ringObs.unobserve(e.target);
+    }
+  });
+},{threshold:.2});
+document.querySelectorAll('.rings-grid,.skill-bars,.progress-wrap').forEach(el=>ringObs.observe(el));
+
+// ── MAGNETIC BUTTONS ──────────────────────────────────────────────────────
+document.querySelectorAll('.btn-magnetic').forEach(btn=>{
+  btn.addEventListener('mousemove',e=>{
+    const r=btn.getBoundingClientRect();
+    const dx=(e.clientX-r.left-r.width/2)*.35;
+    const dy=(e.clientY-r.top-r.height/2)*.35;
+    btn.style.transform=`translate(${dx}px,${dy}px)`;
+  });
+  btn.addEventListener('mouseleave',()=>{ btn.style.transform=''; });
+});
+
+// ── 3D CARD TILT ──────────────────────────────────────────────────────────
+document.querySelectorAll('.project-card.tilt').forEach(card=>{
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect();
+    const x=(e.clientX-r.left)/r.width-.5;
+    const y=(e.clientY-r.top)/r.height-.5;
+    card.style.transform=`perspective(1200px) rotateY(${x*14}deg) rotateX(${-y*14}deg) scale(1.02)`;
+    card.style.setProperty('--mx',(e.clientX-r.left)/r.width*100+'%');
+    card.style.setProperty('--my',(e.clientY-r.top)/r.height*100+'%');
+  });
+  card.addEventListener('mouseleave',()=>{ card.style.transform=''; });
+});
+
+// ── TERMINAL ANIMATION (nlp_project) ─────────────────────────────────────
+const nlpCard=document.querySelector('[data-repo="nlp_project"]');
+if(nlpCard){
+  const terminal=nlpCard.querySelector('.terminal');
+  if(terminal){
+    const lines=terminal.querySelectorAll('.terminal-line');
+    let termTimeout;
+    nlpCard.addEventListener('mouseenter',()=>{
+      lines.forEach((l,i)=>{ termTimeout=setTimeout(()=>l.classList.add('show'),i*400); });
+    });
+    nlpCard.addEventListener('mouseleave',()=>{
+      clearTimeout(termTimeout);
+      setTimeout(()=>lines.forEach(l=>l.classList.remove('show')),3000);
+    });
+  }
+}
+
+// ── SKILLS TABS ───────────────────────────────────────────────────────────
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.tab-btn').forEach(b=>{ b.classList.remove('active'); b.setAttribute('aria-selected','false'); });
+    document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active'); btn.setAttribute('aria-selected','true');
+    document.getElementById(btn.dataset.tab).classList.add('active');
+    // re-trigger ring animations for new tab
+    const newPane=document.getElementById(btn.dataset.tab);
+    newPane.querySelectorAll('.ring-prog').forEach(r=>{
+      r.style.strokeDashoffset=circum*(1-r.dataset.pct/100);
+    });
+    newPane.querySelectorAll('.skill-bar-fill[data-w]').forEach(b=>{ b.style.width=b.dataset.w+'%'; });
+  });
+});
+
+// ── CONTACT FORM ─────────────────────────────────────────────────────────
+document.getElementById('contact-form').addEventListener('submit',e=>{
+  e.preventDefault();
+  const name=e.target.name.value;
+  const email=e.target.email.value;
+  const org=e.target.org.value;
+  const sub=e.target.subject.value;
+  const msg=e.target.message.value;
+  const body=encodeURIComponent(`From: ${name}\nOrganization: ${org}\n\n${msg}`);
+  const subj=encodeURIComponent(`[Portfolio] ${sub} — ${name}`);
+  window.location.href=`mailto:eliasse@aims.ac.za?subject=${subj}&body=${body}`;
+  e.target.style.display='none';
+  document.getElementById('form-success').style.display='block';
+});
+
+// ── GITHUB LIVE ───────────────────────────────────────────────────────────
+async function loadGitHub(){
+  try{
+    const res=await fetch('https://api.github.com/users/TIAO-Eliasse/repos?per_page=100&sort=updated');
+    const repos=await res.json();
+    if(!Array.isArray(repos)) return;
+    const total=repos.length;
+    const stars=repos.reduce((s,r)=>s+r.stargazers_count,0);
+    const langs={};
+    repos.forEach(r=>{ if(r.language) langs[r.language]=(langs[r.language]||0)+1; });
+    const topLang=Object.entries(langs).sort((a,b)=>b[1]-a[1])[0]?.[0]||'Python';
+    document.querySelectorAll('[data-github-total]').forEach(el=>el.textContent=total+' public repos');
+    const ghStars=document.getElementById('gh-stars'); if(ghStars) ghStars.textContent=stars;
+    const ghLang=document.getElementById('gh-lang'); if(ghLang) ghLang.textContent=topLang;
+    const lc={'Python':'#3572A5','Jupyter Notebook':'#DA5B0B','R':'#198CE7','JavaScript':'#F1E05A','HTML':'#E34C26','CSS':'#563D7C','Shell':'#89E051'};
+    const ago=d=>{ const days=Math.floor((Date.now()-new Date(d))/86400000); if(!days) return 'Today'; if(days===1) return 'Yesterday'; if(days<30) return days+'d ago'; return Math.floor(days/30)+'mo ago'; };
+    repos.forEach(r=>{
+      const card=document.querySelector(`[data-repo="${r.name}"]`);
+      if(!card) return;
+      const l=card.querySelector('.repo-lang'); if(l&&r.language) l.innerHTML=`<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${lc[r.language]||'#4f8ef7'};margin-right:4px"></span>${r.language}`;
+      const s=card.querySelector('.repo-stars'); if(s) s.textContent='⭐ '+r.stargazers_count;
+      const u=card.querySelector('.repo-updated'); if(u) u.textContent=ago(r.updated_at);
+      const lk=card.querySelector('.repo-link'); if(lk) lk.href=r.html_url;
+    });
+  } catch(e){ console.log('GitHub API unavailable'); }
+}
+loadGitHub();
+
+// ── LAST UPDATED ──────────────────────────────────────────────────────────
+document.getElementById('last-updated').textContent=new Date().toLocaleDateString('en-GB',{month:'long',year:'numeric'});
+</script>
 </body>
 </html>
